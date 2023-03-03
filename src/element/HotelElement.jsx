@@ -1,26 +1,10 @@
-import { css } from "styled-components";
+import React from "react";
+import styled from "styled-components";
+import { boxBorderRadius } from "utils/style/mixins";
+import hotel from "../assets/hotel.jpg";
+import { AiFillStar } from "react-icons/ai";
 
-export const flexRowCenter = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const flexColumnCenter = css`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-
-export const boxBorderRadius = css`
-  border-radius: 0.6rem;
-`;
-
-export const boxShadow = css`
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-`;
-
-const HotelElementWrapper = css`
+const HotelElementWrapper = styled.li`
   padding: 0.3rem;
   display: flex;
   flex-direction: column;
@@ -35,7 +19,7 @@ const HotelElementWrapper = css`
   }
 `;
 
-const HotelElementTextWrapper = css`
+const HotelElementTextWrapper = styled.ul`
   padding: 0.2rem;
   padding-top: 1.6rem;
   display: flex;
@@ -70,3 +54,24 @@ const HotelElementTextWrapper = css`
     margin-top: 0.8rem;
   }
 `;
+
+const HotelElement = () => {
+  return (
+    <HotelElementWrapper>
+      <img src={hotel} alt="view" />
+      <HotelElementTextWrapper>
+        <header className="hotel-header">
+          <h1>인천 부평구, 한국</h1>
+          <span className="star">
+            <AiFillStar size={15} />
+            <span>4.8</span>
+          </span>
+        </header>
+        <p>도심 속 전망</p>
+        <span className="price">₩ 316,233 / 박</span>
+      </HotelElementTextWrapper>
+    </HotelElementWrapper>
+  );
+};
+
+export default HotelElement;
