@@ -20,7 +20,7 @@ export const boxShadow = css`
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
-const HotelElementWrapper = css`
+export const HotelElementWrapperStyle = css`
   padding: 0.3rem;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@ const HotelElementWrapper = css`
   }
 `;
 
-const HotelElementTextWrapper = css`
+export const HotelElementTextWrapperStyle = css`
   padding: 0.2rem;
   padding-top: 1.6rem;
   display: flex;
