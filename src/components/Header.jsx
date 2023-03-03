@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BiSearchAlt, BiUser } from 'react-icons/bi';
 import { AiOutlineMenu, AiOutlinePlusCircle } from 'react-icons/ai';
 import { useState } from 'react';
-import { flexRowCenter, flexColumnCenter, boxBorderRadius } from 'utils/style/mixins';
+import { HeaderFooterStyle, flexRowCenter, flexColumnCenter, boxBorderRadius } from 'utils/style/mixins';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -65,11 +65,7 @@ const Header = () => {
 export default Header;
 
 const HeaderContainer = styled.div`
-    ${flexRowCenter};
-    justify-content: space-between;
-    width: 100%;
-    height: 8rem;
-    padding: 0px 40px;
+    ${HeaderFooterStyle}
     border-bottom: 2px solid ${(props) => props.theme.borderColor};
 `;
 
