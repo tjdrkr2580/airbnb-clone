@@ -1,11 +1,10 @@
-import React from "react";
 import styled from "styled-components";
 import {
   HotelElementTextWrapperStyle,
   HotelElementWrapperStyle,
 } from "utils/style/mixins";
-import hotel from "../assets/hotel.jpg";
-import { AiFillStar } from "react-icons/ai";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const HotelElementWrapper = styled.li`
   ${HotelElementWrapperStyle}
@@ -18,17 +17,16 @@ const HotelElementTextWrapper = styled.ul`
 const HotelElement = () => {
   return (
     <HotelElementWrapper>
-      <img src={hotel} alt="view" />
+      <Skeleton height={270} />
       <HotelElementTextWrapper>
         <header className="hotel-header">
-          <h1>인천 부평구, 한국</h1>
-          <span className="star">
-            <AiFillStar size={15} />
-            <span>4.8</span>
-          </span>
+          <Skeleton />
         </header>
-        <p>도심 속 전망</p>
-        <span className="price">₩ 316,233 / 박</span>
+        <p>
+          <Skeleton height={15} />
+          <Skeleton width={60} height={15} />
+        </p>
+        <Skeleton className="price" width={50} />
       </HotelElementTextWrapper>
     </HotelElementWrapper>
   );

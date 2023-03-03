@@ -1,7 +1,48 @@
+import HotelElement from "element/HotelElement";
+import SkeletonHotelElement from "element/SkeletonHotelElement";
 import React from "react";
+import styled from "styled-components";
+import { HotelGridLayoutStyle } from "utils/style/mixins";
+
+const HomeWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const HotelGridWrapper = styled.ul`
+  ${HotelGridLayoutStyle}
+`;
 
 const Home = () => {
-  return <div className="App"></div>;
+  return (
+    <HomeWrapper>
+      <HotelGridWrapper>
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <HotelElement />
+        <SkeletonHotelElement />
+      </HotelGridWrapper>
+    </HomeWrapper>
+  );
 };
 
 export default Home;
