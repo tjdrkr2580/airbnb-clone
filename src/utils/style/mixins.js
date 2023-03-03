@@ -9,6 +9,7 @@ export const flexRowCenter = css`
 export const flexColumnCenter = css`
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
 `;
 
@@ -21,7 +22,7 @@ export const boxShadow = css`
 `;
 
 export const HotelGridLayoutStyle = css`
-  padding: 0.8rem 0;
+  padding: 3rem 0;
   width: auto;
   display: grid;
   margin: 0 auto;
