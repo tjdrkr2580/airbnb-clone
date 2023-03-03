@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { isLoginModal } from "store/atoms";
+import { isLoginModalState } from "store/atoms";
 import styled from "styled-components";
 import { modalVariants } from "utils/animation/variants";
 import {
@@ -80,7 +80,7 @@ const SignForm = styled.form`
 `;
 
 const LoginModal = () => {
-  const setIsLoginModal = useSetRecoilState(isLoginModal);
+  const setIsLoginModal = useSetRecoilState(isLoginModalState);
   const [isSignIn, setIsSignIn] = useState(false);
   const { register, reset, formState: errors, handleSubmit } = useForm();
   const modalRef = useRef(null);

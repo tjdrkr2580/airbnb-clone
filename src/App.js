@@ -5,11 +5,11 @@ import Header from "components/Header";
 import Home from "pages/Home";
 import { theme } from "utils/style/theme";
 import { useRecoilValue } from "recoil";
-import { isLoginModal } from "store/atoms";
+import { isLoginModalState } from "store/atoms";
 import LoginModal from "components/LoginModal";
 
 function App() {
-  const isVisibleLoginModal = useRecoilValue(isLoginModal);
+  const isVisibleLoginModal = useRecoilValue(isLoginModalState);
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route element={<Home />} path="/" />
         </Routes>
-        <LoginModal />
+        {isVisibleLoginModal === true && <LoginModal />}
       </BrowserRouter>
     </ThemeProvider>
   );
