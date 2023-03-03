@@ -2,10 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiSearchAlt, BiUser } from 'react-icons/bi';
-import { AiOutlineMenu } from 'react-icons/ai';
+import { AiOutlineMenu, AiOutlinePlusCircle } from 'react-icons/ai';
+import { useState } from 'react';
+import { flexRowCenter, flexColumnCenter, boxBorderRadius } from 'utils/style/mixins';
 
 const Header = () => {
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+
+    // 버튼 클릭시
+    const showMyInfo = () => {
+        setShowModal(!showModal);
+    };
+
     return (
         <HeaderContainer>
             <LogoImg src={process.env.PUBLIC_URL + 'logo.png'} />
@@ -26,18 +35,29 @@ const Header = () => {
                 <LoginButtonBox>로그인</LoginButtonBox>
             </button> */}
             {/* 로그인 했을때 마이페이지 버튼 */}
-            <button
-                style={{ backgroundColor: 'white' }}
-                onClick={() => {
-                    navigate('/login');
-                }}
-            >
-                <LoginButtonBox>
-                    <AiOutlineMenu size={16} />
-                    <BiUser size={16} />
-                    <img></img>
-                </LoginButtonBox>
-            </button>
+            <LoginUserButtonContainer>
+                <button style={{ backgroundColor: 'white' }}>
+                    <AiOutlinePlusCircle size={22} />
+                </button>
+                <button style={{ backgroundColor: 'white' }} onClick={showMyInfo}>
+                    <LoginButtonBox>
+                        <AiOutlineMenu size={16} />
+                        <BiUser size={16} />
+                        <img></img>
+                    </LoginButtonBox>
+                </button>
+                <MyInfoModalContainer isShow={showModal}>
+                    <UserEmail>
+                        <span>jeong@naver.com</span>
+                    </UserEmail>
+                    <UserPage>
+                        <span>마이페이지</span>
+                    </UserPage>
+                    <LogoutButton>
+                        <button style={{ backgroundColor: 'transparent' }}>로그아웃</button>
+                    </LogoutButton>
+                </MyInfoModalContainer>
+            </LoginUserButtonContainer>
         </HeaderContainer>
     );
 };
@@ -45,29 +65,24 @@ const Header = () => {
 export default Header;
 
 const HeaderContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    ${flexRowCenter};
     justify-content: space-between;
     width: 100%;
-    height: 80px;
+    height: 8rem;
     padding: 0px 40px;
-    box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid ${(props) => props.theme.borderColor};
 `;
 
 const LogoImg = styled.img`
-    width: 110px;
+    width: 11rem;
 `;
 
 const SearchContainer = styled.div`
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 200px;
-    height: 48px;
+    ${flexRowCenter};
+    min-width: 20rem;
+    height: 4.8rem;
+    border-radius: 6.25rem;
     border: 1.5px solid ${(props) => props.theme.borderColor};
-    border-radius: 100px;
     box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     &:hover {
@@ -77,22 +92,67 @@ const SearchContainer = styled.div`
 
 const SearchText = styled.div`
     padding: 0px 16px;
-    //font-size: 1rem;
-    font-size: 16px;
+    font-size: 1.6rem;
 `;
 
 const SearchIconBox = styled.div`
-    background-color: ${(props) => props.theme.mainColor};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
+    ${flexRowCenter};
+    width: 3.2rem;
+    height: 3.2rem;
     border-radius: 50%;
+    background-color: ${(props) => props.theme.mainColor};
+`;
+
+const LoginUserButtonContainer = styled.div`
+    display: flex;
+    gap: 1rem;
+    position: relative;
 `;
 const LoginButtonBox = styled(SearchContainer)`
-    min-width: 77px;
-    height: 42px;
-    font-size: 12px;
+    min-width: 7.7rem;
+    height: 4.2rem;
+    font-size: 1.2rem;
     box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.05);
+`;
+
+const MyInfoModalContainer = styled.div`
+    ${flexColumnCenter};
+    justify-content: center;
+    background-color: white;
+    width: 15rem;
+    height: 20rem;
+    ${boxBorderRadius}
+    position: absolute;
+    top: 50px;
+    right: 0px;
+    z-index: 10;
+    display: ${(props) => (props.isShow ? 'block' : 'none')};
+    box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    div {
+        display: flex;
+        align-items: center;
+        padding: 0px 5px;
+        border-bottom: 1px solid ${(props) => props.theme.borderColor};
+        span,
+        button {
+            font-size: 1.3rem;
+        }
+    }
+`;
+
+const UserEmail = styled.div`
+    height: 33%;
+`;
+const UserPage = styled.div`
+    height: 33%;
+    &:hover {
+        background-color: ${(props) => props.theme.borderColor};
+    }
+`;
+const LogoutButton = styled.div`
+    height: 33%;
+    &:hover {
+        background-color: ${(props) => props.theme.borderColor};
+    }
 `;
