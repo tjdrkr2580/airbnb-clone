@@ -46,15 +46,17 @@ export const HotelGridLayoutStyle = css`
   @media (max-width: 550px) {
     grid-template-columns: 1fr;
   }
+  transition: 0.2s filter;
 `;
 
 export const HotelElementWrapperStyle = css`
-  padding: 0.3rem;
+  padding: 0.8rem;
   display: flex;
   flex-direction: column;
   max-width: 40rem;
   height: 42rem;
   cursor: pointer;
+  ${boxBorderRadius}
 
   @media (min-width: 1630px) {
     width: 18.5vw;
@@ -84,6 +86,11 @@ export const HotelElementWrapperStyle = css`
     ${boxBorderRadius}
     width: 100%;
     height: 70%;
+  }
+  background-color: white;
+  transition: 0.3s filter;
+  &:hover {
+    filter: brightness(85%);
   }
 `;
 
