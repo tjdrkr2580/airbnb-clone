@@ -9,6 +9,7 @@ export const flexRowCenter = css`
 export const flexColumnCenter = css`
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
 `;
 
@@ -21,7 +22,7 @@ export const boxShadow = css`
 `;
 
 export const HotelGridLayoutStyle = css`
-    padding: 0.8rem 0;
+    padding: 3rem 0;
     width: auto;
     display: grid;
     margin: 0 auto;
@@ -30,23 +31,28 @@ export const HotelGridLayoutStyle = css`
     place-items: center;
     @media (min-width: 1180px) {
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    }
-    @media (max-width: 1630px) {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-    }
+        gap: 1rem;
+        place-items: center;
+        @media (min-width: 1180px) {
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        }
+        @media (max-width: 1630px) {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
 
-    @media (max-width: 1180px) {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+        @media (max-width: 1180px) {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
 
-    @media (max-width: 905px) {
-        grid-template-columns: 1fr 1fr;
-    }
+        @media (max-width: 905px) {
+            grid-template-columns: 1fr 1fr;
+        }
 
-    @media (max-width: 550px) {
-        grid-template-columns: 1fr;
+        @media (max-width: 550px) {
+            grid-template-columns: 1fr;
+        }
+        transition: 0.2s filter;
     }
-    transition: 0.2s filter;
 `;
 
 export const HotelElementWrapperStyle = css`
