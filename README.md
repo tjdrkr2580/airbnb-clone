@@ -12,6 +12,22 @@
 - `test `: 테스트 코드, 리펙토링 테스트 코드 추가
 - `chore` : 빌드 업무 수정, 패키지 매니저 수정
 
+
+## Git - Commit Message Convention
+- `main`
+- `develop`
+- `feature`/(Issue_number) or (Feature_name)
+- `hotfix`/(Issue_name)
+- `error`/(Where)
+
+
+
+## Branch 
+- `main` : 다음 버전 커밋 Repository
+- `develop` : 다음 버전 커밋 Repository
+- `branch convention 참고`..
+
+
 ## Stack
 
 - React
