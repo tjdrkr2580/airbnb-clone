@@ -20,12 +20,64 @@ export const boxShadow = css`
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
+export const HotelGridLayoutStyle = css`
+  padding: 0.8rem 0;
+  width: auto;
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  place-items: center;
+  @media (min-width: 1180px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+  @media (max-width: 1630px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 1180px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 905px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 550px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 export const HotelElementWrapperStyle = css`
   padding: 0.3rem;
   display: flex;
   flex-direction: column;
-  min-width: 33rem;
-  height: 41rem;
+  max-width: 40rem;
+  height: 42rem;
+  cursor: pointer;
+
+  @media (min-width: 1630px) {
+    width: 18.5vw;
+  }
+
+  @media (max-width: 1629px) {
+    width: 22vw;
+  }
+
+  @media (max-width: 1180px) {
+    width: 30vw;
+  }
+
+  @media (max-width: 905px) {
+    width: 45vw;
+    max-width: 45rem;
+  }
+
+  @media (max-width: 550px) {
+    width: 88vw;
+    max-width: 500px;
+  }
+
   img {
     object-fit: cover;
     object-position: center;
