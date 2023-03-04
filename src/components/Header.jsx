@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { BiSearchAlt, BiUser } from "react-icons/bi";
+import { BiSearch, BiUser } from "react-icons/bi";
 import { AiOutlineMenu, AiOutlinePlusCircle } from "react-icons/ai";
 import {
   HeaderFooterStyle,
@@ -31,7 +31,7 @@ const Header = () => {
         <SearchContainer>
           <SearchText>숙소 검색</SearchText>
           <SearchIconBox>
-            <BiSearchAlt size={16} />
+            <BiSearch size={18} color={"white"} />
           </SearchIconBox>
         </SearchContainer>
       </TransparentBtn>
@@ -45,7 +45,7 @@ const Header = () => {
       </button> */}
       <LoginUserButtonContainer>
         <TransparentBtn>
-          <AiOutlinePlusCircle size={22} />
+          <AiOutlinePlusCircle size={20} />
         </TransparentBtn>
         <TransparentBtn>
           <LoginButtonBox onClick={() => setVisibleLoginModal(true)}>
