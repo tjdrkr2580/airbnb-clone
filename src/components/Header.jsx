@@ -83,7 +83,7 @@ const HeaderContainer = styled.div`
 `;
 
 const LogoImg = styled.img`
-  width: 12rem;
+  width: 10rem;
 `;
 
 const SearchContainer = styled.div`
