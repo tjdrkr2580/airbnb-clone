@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import styled, { css } from "styled-components";
 
 export const flexRowCenter = css`
   display: flex;
@@ -142,4 +142,10 @@ export const HeaderFooterStyle = css`
 export const PageMargin = css`
   margin-top: 10rem;
   padding-bottom: 8rem;
+`;
+
+export const UnderLine = styled.section`
+  width: 100%;
+  height: 0.1rem;
+  background-color: ${(props) => props.theme.unselectColor};
 `;

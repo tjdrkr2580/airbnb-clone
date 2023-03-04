@@ -10,6 +10,7 @@ import { FiCopy } from "react-icons/fi";
 import Test from "../assets/hotel.jpg";
 import Carousel from "nuka-carousel/lib/carousel";
 import { AiFillLeftCircle, AiFillRightCircle } from "react-icons/ai";
+import DetailSubmit from "components/DetailSubmit";
 
 const DetailWrapper = styled.section`
   display: flex;
@@ -80,14 +81,14 @@ const MainComponent = styled.main`
   margin-top: 3rem;
   position: relative;
   display: flex;
-  gap: 2rem;
+  gap: 1.25rem;
 `;
 
 const ContentComponent = styled.section`
   display: flex;
   flex-direction: column;
-  width: 50%;
-  max-width: 60rem;
+  width: 75%;
+  height: 108rem;
 `;
 
 const TitleComponent = styled.section`
@@ -106,14 +107,6 @@ const TitleComponent = styled.section`
     object-position: center;
     border-radius: 50%;
   }
-`;
-
-const SubmitComponent = styled.section`
-  position: sticky;
-  width: 48%;
-  height: 40rem;
-  ${boxBorderRadius}
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 
 const Detail = () => {
@@ -165,7 +158,7 @@ const Detail = () => {
             <img src={Test} alt="test" />
           </TitleComponent>
         </ContentComponent>
-        <SubmitComponent></SubmitComponent>
+        <DetailSubmit />
       </MainComponent>
     </DetailWrapper>
   );
