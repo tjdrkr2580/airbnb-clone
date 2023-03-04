@@ -145,6 +145,7 @@ export const PageMargin = css`
 `;
 
 export const UnderLine = styled.section`
+  margin-top: 0.8rem;
   width: 100%;
   height: 0.1rem;
   background-color: ${(props) => props.theme.unselectColor};

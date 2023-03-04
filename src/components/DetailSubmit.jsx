@@ -29,6 +29,11 @@ const SubmitComponent = styled.form`
     font-size: 1.3rem;
     font-weight: 500;
   }
+  .price-info {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    align-self: center;
+  }
 `;
 
 const DateWrapper = styled.section`
@@ -40,8 +45,33 @@ const DateWrapper = styled.section`
     height: 3.5rem;
     padding: 0 0.8rem;
     width: 15.5rem;
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 500;
+  }
+`;
+
+const PriceComponent = styled.section`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.4rem;
+  color: ${(props) => props.theme.selectColor1};
+  .price {
+    font-size: 1.4rem;
+  }
+  .price-total {
+    font-size: 1.5rem;
+  }
+`;
+
+const TotalComponent = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .total {
+    font-size: 1.8rem;
+  }
+  .total-price {
+    font-size: 1.6rem;
   }
 `;
 
@@ -55,6 +85,7 @@ const DetailSubmit = () => {
       <h1>₩662,220 / 박</h1>
       <DateWrapper>
         <CustomDatePicker
+          minDate={new Date()}
           dateFormat="yyyy. MM. dd"
           selected={startDate}
           locale={ko}
@@ -62,6 +93,7 @@ const DetailSubmit = () => {
           onChange={(date) => setStartDate(date)}
         />
         <CustomDatePicker
+          minDate={new Date()}
           dateFormat="yyyy. MM. dd"
           selected={endDate}
           locale={ko}
@@ -71,7 +103,16 @@ const DetailSubmit = () => {
       </DateWrapper>
       <input type="number" className="people" placeholder="인원" />
       <Button type={true}>예약하기</Button>
+      <p className="price-info">예약 확정 전에는 요금이 청구되지 않습니다.</p>
+      <PriceComponent>
+        <p className="price">₩360,000 x 1박</p>
+        <span className="price-total">₩360,000</span>
+      </PriceComponent>
       <UnderLine />
+      <TotalComponent>
+        <span className="total">총 합계 :</span>
+        <span className="total-price">₩360,000</span>
+      </TotalComponent>
     </SubmitComponent>
   );
 };

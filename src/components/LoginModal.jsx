@@ -11,6 +11,8 @@ import {
 } from "utils/style/mixins";
 import { IoMdClose } from "react-icons/io";
 import { useForm } from "react-hook-form";
+import Button from "element/Button";
+import { UnderLine } from "utils/style/mixins";
 
 const ModalWrapper = styled.div`
   z-index: 999;
@@ -44,6 +46,9 @@ const ModalLayout = styled(motion.section)`
     width: fit-content;
     align-self: flex-start;
   }
+  .title {
+    margin: 1.5rem;
+  }
 `;
 
 const TitleBox = styled.section`
@@ -72,7 +77,7 @@ const SignForm = styled.form`
     font-size: 1.55rem;
     letter-spacing: 0.1rem;
     padding: 0 1.2rem;
-    border: 0.075rem solid ${(props) => props.theme.selectColor2};
+    border: 0.15rem solid ${(props) => props.theme.borderColor};
     &:focus {
       outline: none;
     }
@@ -81,9 +86,12 @@ const SignForm = styled.form`
 
 const LoginModal = () => {
   const setIsLoginModal = useSetRecoilState(isLoginModalState);
-  const [isSignIn, setIsSignIn] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const { register, reset, formState: errors, handleSubmit } = useForm();
   const modalRef = useRef(null);
+  const onLoginToggle = () => {
+    setIsSignUp(!isSignUp);
+  };
   const onSubmit = (data) => {};
   return (
     <ModalWrapper
@@ -94,32 +102,56 @@ const LoginModal = () => {
         }
       }}
     >
-      <ModalLayout
-        variants={modalVariants}
-        initial="start"
-        animate="animate"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <ModalLayout variants={modalVariants} initial="start" animate="animate">
         <TitleBox>
           <IoMdClose size={20} onClick={() => setIsLoginModal(false)} />
           <h1 className="title">로그인 또는 회원 가입</h1>
           <section />
         </TitleBox>
-        <h2>에어비앤비에 오신 것을 환영합니다.</h2>
-        <SignForm>
-          <input
-            type="text"
-            {...register("nickname")}
-            placeholder="사용 할 이름"
-          />
-          <input type="text" {...register("email")} placeholder="이메일" />
-          <input
-            type="password"
-            {...register("password")}
-            placeholder="비밀번호"
-          />
-          <input type="password" placeholder="비밀번호 확인" />
-        </SignForm>
+        {isSignUp === false && (
+          <>
+            <h2>에어비앤비에 오신 것을 환영합니다.</h2>
+            <SignForm onSubmit={handleSubmit(onSubmit)}>
+              <input
+                type="text"
+                {...register("nickname")}
+                placeholder="닉네임"
+              />
+              <input type="text" {...register("email")} placeholder="이메일" />
+              <input
+                type="password"
+                {...register("password")}
+                placeholder="비밀번호"
+              />
+              <input type="password" placeholder="비밀번호 확인" />
+            </SignForm>
+            <Button type={true}>회원가입</Button>
+            <UnderLine />
+            <h1 className="title">혹시 사용하고 계신 계정이 존재한가요?</h1>
+            <Button type={false} onClick={onLoginToggle}>
+              로그인
+            </Button>
+          </>
+        )}
+        {isSignUp === true && (
+          <>
+            <h2>에어비앤비에 오신 것을 환영합니다.</h2>
+            <SignForm onSubmit={handleSubmit(onSubmit)}>
+              <input type="text" {...register("email")} placeholder="이메일" />
+              <input
+                type="password"
+                {...register("password")}
+                placeholder="비밀번호"
+              />
+            </SignForm>
+            <Button type={true}>로그인</Button>
+            <UnderLine />
+            <h1 className="title">혹시 계정이 존재하지 않나요?</h1>
+            <Button type={false} onClick={onLoginToggle}>
+              회원가입
+            </Button>
+          </>
+        )}
       </ModalLayout>
     </ModalWrapper>
   );

@@ -4,7 +4,7 @@ import { boxBorderRadius } from "../utils/style/mixins";
 
 const CustomBtn = styled.button`
   cursor: pointer;
-  width: ${(props) => (props.isType ? "100%" : "15rem")};
+  width: 100%;
   height: 4rem;
   font-size: 1.35rem;
   ${boxBorderRadius};
@@ -22,9 +22,10 @@ const CustomBtn = styled.button`
           font-weight: 500;
         `
       : css`
+          border: 0.1rem solid ${(props) => props.theme.borderColor};
           background-color: transparent;
           color: black;
-          font-size: 1.3rem;
+          font-size: 1.45rem;
           font-weight: 500;
         `}
 `;
