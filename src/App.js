@@ -6,13 +6,15 @@ import Footer from 'components/Footer';
 import Home from 'pages/Home';
 import { theme } from 'utils/style/theme';
 import { useRecoilValue } from 'recoil';
-import { isLoginModalState } from 'store/atoms';
+import { isHotelAddState, isLoginModalState } from 'store/atoms';
 import LoginModal from 'components/LoginModal';
 import Detail from 'pages/Detail';
 import MyPage from 'pages/MyPage';
+import HotelAddModal from 'components/HotelAddModal';
 
 function App() {
     const isVisibleLoginModal = useRecoilValue(isLoginModalState);
+    const isVisibleHotelModal = useRecoilValue(isHotelAddState);
     return (
         <ThemeProvider theme={theme}>
             <BrowserRouter>
@@ -25,6 +27,7 @@ function App() {
                 </Routes>
                 <Footer />
                 {isVisibleLoginModal === true && <LoginModal />}
+                {isVisibleHotelModal === true && <HotelAddModal />}
             </BrowserRouter>
         </ThemeProvider>
     );
