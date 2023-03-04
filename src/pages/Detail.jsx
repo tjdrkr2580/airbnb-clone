@@ -10,6 +10,7 @@ import { FiCopy } from "react-icons/fi";
 import Test from "../assets/hotel.jpg";
 import Carousel from "nuka-carousel/lib/carousel";
 import { AiFillLeftCircle, AiFillRightCircle } from "react-icons/ai";
+import DetailSubmit from "components/DetailSubmit";
 
 const DetailWrapper = styled.section`
   display: flex;
@@ -80,14 +81,47 @@ const MainComponent = styled.main`
   margin-top: 3rem;
   position: relative;
   display: flex;
-  gap: 2rem;
+  justify-content: space-between;
+  gap: 1.25rem;
 `;
 
 const ContentComponent = styled.section`
   display: flex;
   flex-direction: column;
-  width: 50%;
-  max-width: 60rem;
+  width: 60%;
+  height: 108rem;
+`;
+
+const LineComponent = styled.section`
+  padding: 2rem 0;
+  border-bottom: 0.25rem solid ${(props) => props.theme.borderColor};
+
+  p {
+    font-size: 1.5rem;
+    color: ${(props) => props.theme.selectColor2};
+    line-height: 1.75;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    li {
+      font-size: 1.65rem;
+    }
+  }
+
+  h1 {
+    margin-bottom: 3rem;
+
+    font-size: 2.2rem;
+  }
 `;
 
 const TitleComponent = styled.section`
@@ -106,14 +140,6 @@ const TitleComponent = styled.section`
     object-position: center;
     border-radius: 50%;
   }
-`;
-
-const SubmitComponent = styled.section`
-  position: sticky;
-  width: 48%;
-  height: 40rem;
-  ${boxBorderRadius}
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 
 const Detail = () => {
@@ -164,8 +190,28 @@ const Detail = () => {
             <h1>정다정 님이 호스팅하는 숙소의 정보</h1>
             <img src={Test} alt="test" />
           </TitleComponent>
+          <LineComponent>
+            <h1>설명</h1>
+            <p>
+              서울 도심에서 한옥의 아름다움과 독특함을 경험하실 수 있는 이화한옥
+              별관 '사직루'는 사직공원에서 오분 거리에 위치하며 외부는 한옥으로
+              지어졌지만 내부는 현대식 부엌, 화장실, 침대를 두어 계시는 동안
+              편안하게 생활 하실 수 있도록 준비했습니다. 유독 방마다 채광이 좋아
+              따뜻하고 아늑한 한옥의 정서를 느끼실 수 있습니다. 최대 4인까지
+              가능하여 소규모 모임을 가지시기에도 좋은 숙소 입니다.
+            </p>
+          </LineComponent>
+          <LineComponent>
+            <h1>숙소 편의시설</h1>
+            <ul className="grid">
+              <li>주방</li>
+              <li>무선 인터넷</li>
+              <li>헤어 드라이어</li>
+              <li>필수품목</li>
+            </ul>
+          </LineComponent>
         </ContentComponent>
-        <SubmitComponent></SubmitComponent>
+        <DetailSubmit />
       </MainComponent>
     </DetailWrapper>
   );
