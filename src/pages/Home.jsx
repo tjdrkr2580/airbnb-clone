@@ -1,6 +1,7 @@
 import HotelElement from "element/HotelElement";
 import SkeletonHotelElement from "element/SkeletonHotelElement";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { HotelGridLayoutStyle, PageMargin } from "utils/style/mixins";
 

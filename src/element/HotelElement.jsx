@@ -6,6 +6,7 @@ import {
 } from "utils/style/mixins";
 import hotel from "../assets/hotel.jpg";
 import { AiFillStar } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const HotelElementWrapper = styled.li`
   ${HotelElementWrapperStyle}
@@ -16,8 +17,9 @@ const HotelElementTextWrapper = styled.ul`
 `;
 
 const HotelElement = () => {
+  const navigate = useNavigate();
   return (
-    <HotelElementWrapper>
+    <HotelElementWrapper onClick={() => navigate("/2")}>
       <img src={hotel} alt="view" />
       <HotelElementTextWrapper>
         <header className="hotel-header">

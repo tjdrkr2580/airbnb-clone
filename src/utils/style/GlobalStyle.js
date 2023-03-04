@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 10px;
     font-family: Pretendard;
     list-style: none;
+    font-weight: 500;
     }
     
     button {
