@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { flexColumnCenter, PageMargin } from "utils/style/mixins";
+import {
+  boxBorderRadius,
+  flexColumnCenter,
+  PageMargin,
+} from "utils/style/mixins";
 import { AiFillHeart } from "react-icons/ai";
 import { FiCopy } from "react-icons/fi";
 import Test from "../assets/hotel.jpg";
@@ -106,9 +110,10 @@ const TitleComponent = styled.section`
 
 const SubmitComponent = styled.section`
   position: sticky;
-  width: 50%;
+  width: 48%;
   height: 40rem;
-  background-color: yellow;
+  ${boxBorderRadius}
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 
 const Detail = () => {
