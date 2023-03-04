@@ -69,10 +69,10 @@ const SignForm = styled.form`
   input {
     width: 100%;
     height: 6rem;
-    font-size: 1.4rem;
+    font-size: 1.55rem;
+    letter-spacing: 0.1rem;
     padding: 0 1.2rem;
     border: 0.075rem solid ${(props) => props.theme.selectColor2};
-    border-radius: 0.6rem 0.6rem 0 0;
     &:focus {
       outline: none;
     }
@@ -101,12 +101,17 @@ const LoginModal = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <TitleBox>
-          <IoMdClose size={20} />
+          <IoMdClose size={20} onClick={() => setIsLoginModal(false)} />
           <h1 className="title">로그인 또는 회원 가입</h1>
           <section />
         </TitleBox>
         <h2>에어비앤비에 오신 것을 환영합니다.</h2>
         <SignForm>
+          <input
+            type="text"
+            {...register("nickname")}
+            placeholder="사용 할 이름"
+          />
           <input type="text" {...register("email")} placeholder="이메일" />
           <input
             type="password"

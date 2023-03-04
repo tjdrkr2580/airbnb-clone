@@ -2,12 +2,13 @@ import HotelElement from "element/HotelElement";
 import SkeletonHotelElement from "element/SkeletonHotelElement";
 import React from "react";
 import styled from "styled-components";
-import { HotelGridLayoutStyle } from "utils/style/mixins";
+import { HotelGridLayoutStyle, PageMargin } from "utils/style/mixins";
 
 const HomeWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  ${PageMargin}
 `;
 
 const HotelGridWrapper = styled.ul`

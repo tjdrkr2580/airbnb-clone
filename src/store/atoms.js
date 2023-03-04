@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 
 export const isLoginModalState = atom({
   key: `state${v4()}`,
-  default: true,
+  default: false,
 });
 
 export const isUserState = atom({
