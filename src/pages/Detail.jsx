@@ -72,6 +72,45 @@ const CustomCarousel = styled(Carousel)`
   }
 `;
 
+const MainComponent = styled.main`
+  margin-top: 3rem;
+  position: relative;
+  display: flex;
+  gap: 2rem;
+`;
+
+const ContentComponent = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  max-width: 60rem;
+`;
+
+const TitleComponent = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 0.25rem solid ${(props) => props.theme.borderColor};
+  h1 {
+    font-size: 2.2rem;
+  }
+  img {
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+  }
+`;
+
+const SubmitComponent = styled.section`
+  position: sticky;
+  width: 50%;
+  height: 40rem;
+  background-color: yellow;
+`;
+
 const Detail = () => {
   return (
     <DetailWrapper>
@@ -114,6 +153,15 @@ const Detail = () => {
           <img src={Test} alt="img" />
         </CustomCarousel>
       </CuroselCustom>
+      <MainComponent>
+        <ContentComponent>
+          <TitleComponent>
+            <h1>정다정 님이 호스팅하는 숙소의 정보</h1>
+            <img src={Test} alt="test" />
+          </TitleComponent>
+        </ContentComponent>
+        <SubmitComponent></SubmitComponent>
+      </MainComponent>
     </DetailWrapper>
   );
 };
