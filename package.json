@@ -52,5 +52,6 @@
   },
   "devDependencies": {
     "craco-alias": "^3.0.1"
-  }
+  },
+  "proxy": "https://port-0-airbnb-practice-108dypx2aldzyvyjq.sel3.cloudtype.app/"
 }

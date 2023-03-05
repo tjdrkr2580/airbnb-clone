@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import React, { useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { isLoginModalState } from "store/atoms";
+import {
+  globalUserInfoState,
+  isLoginModalState,
+  isUserState,
+} from "store/atoms";
 import styled from "styled-components";
 import { modalVariants } from "utils/animation/variants";
 import {
@@ -13,6 +17,9 @@ import { IoMdClose } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import Button from "element/Button";
 import { UnderLine } from "utils/style/mixins";
+import { useMutation } from "react-query";
+import { postSignin, postSignup } from "utils/api/api";
+import { setCookie } from "utils/cookie/cookie";
 
 const ModalWrapper = styled.div`
   z-index: 999;
@@ -87,12 +94,51 @@ const SignForm = styled.section`
 const LoginModal = () => {
   const setIsLoginModal = useSetRecoilState(isLoginModalState);
   const [isSignUp, setIsSignUp] = useState(false);
-  const { register, reset, formState: errors, handleSubmit, watch } = useForm();
+  const setGlobalUserInfo = useSetRecoilState(globalUserInfoState);
+  const setIsUser = useSetRecoilState(isUserState);
+  const { register, reset, formState: errors, handleSubmit } = useForm();
   const modalRef = useRef(null);
   const onLoginToggle = () => {
     setIsSignUp(!isSignUp);
+    reset();
   };
-  const onSubmit = (data) => {};
+
+  const signUpMutate = useMutation((data) => postSignup(data), {
+    onSuccess: (res) => {
+      onLoginToggle();
+    },
+  }); //회원가입 mutation
+  const signInMutate = useMutation((data) => postSignin(data), {
+    onSuccess: (response) => {
+      setCookie("token", response.headers.authorization);
+      setIsUser(true);
+      setGlobalUserInfo({
+        email: response.data.data.email,
+        id: response.data.data.id,
+        nickname: response.data.data.nickname,
+      });
+      setIsLoginModal(false);
+    },
+  }); //로그인 mutation
+
+  const onSubmit = async (data) => {
+    if (isSignUp === false) {
+      //로그인 폼
+      const request = {
+        nickname: data.nickname,
+        email: data.email,
+        password: data.password,
+        isAdmin: false,
+      };
+      return await signUpMutate.mutateAsync(request);
+    } else {
+      const request = {
+        email: data.email,
+        password: data.password,
+      };
+      return await signInMutate.mutateAsync(request);
+    }
+  };
   return (
     <ModalWrapper
       ref={modalRef}

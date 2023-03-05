@@ -1,10 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  boxBorderRadius,
-  flexColumnCenter,
-  PageMargin,
-} from "utils/style/mixins";
+import { flexColumnCenter, PageMargin } from "utils/style/mixins";
 import { AiFillHeart } from "react-icons/ai";
 import { FiCopy } from "react-icons/fi";
 import Test from "../assets/hotel.jpg";

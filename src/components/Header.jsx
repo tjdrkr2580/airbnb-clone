@@ -9,17 +9,38 @@ import {
   flexColumnCenter,
   boxBorderRadius,
 } from "utils/style/mixins";
-import { useSetRecoilState } from "recoil";
-import { isHotelAddState, isLoginModalState } from "store/atoms";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
+import {
+  globalUserInfoState,
+  isHotelAddState,
+  isLoginModalState,
+  isUserState,
+} from "store/atoms";
+import { removeCookie } from "utils/cookie/cookie";
 
 const Header = () => {
   const navigate = useNavigate();
   const setVisibleLoginModal = useSetRecoilState(isLoginModalState);
   const [showModal, setShowModal] = useState(false);
   const setHotelAdd = useSetRecoilState(isHotelAddState);
+  const [isUser, setIsUser] = useRecoilState(isUserState);
+  const userInfo = useRecoilValue(globalUserInfoState);
+  const reset = useResetRecoilState(globalUserInfoState);
 
   const showMyInfo = () => {
     setShowModal(!showModal);
+  };
+
+  const onLogout = () => {
+    removeCookie("token");
+    setIsUser(false);
+    reset();
+    setShowModal(false);
   };
 
   return (
@@ -36,36 +57,39 @@ const Header = () => {
           </SearchIconBox>
         </SearchContainer>
       </TransparentBtn>
-      {/* <button
-        style={{ backgroundColor: "white" }}
-        onClick={() => {
-          navigate("/login");
-        }}
-      >
-        <LoginButtonBox>로그인</LoginButtonBox>
-      </button> */}
       <LoginUserButtonContainer>
         <TransparentBtn onClick={() => setHotelAdd(true)}>
           <AiOutlinePlusCircle size={20} />
         </TransparentBtn>
-        <TransparentBtn>
-          <LoginButtonBox onClick={() => setVisibleLoginModal(true)}>
-            <AiOutlineMenu size={16} />
-            <BiUser size={16} />
-            <section />
-          </LoginButtonBox>
-        </TransparentBtn>
-        <MyInfoModalContainer>
-          <UserEmail>
-            <span>jeong@naver.com</span>
-          </UserEmail>
-          <UserPage>
-            <span>마이페이지</span>
-          </UserPage>
-          <LogoutButton>
-            <TransparentBtn>로그아웃</TransparentBtn>
-          </LogoutButton>
-        </MyInfoModalContainer>
+        {isUser === true ? (
+          <TransparentBtn>
+            <LoginButtonBox onClick={showMyInfo}>
+              <AiOutlineMenu size={16} />
+              <BiUser size={16} />
+            </LoginButtonBox>
+          </TransparentBtn>
+        ) : (
+          <TransparentBtn
+            onClick={() => {
+              setVisibleLoginModal(true);
+            }}
+          >
+            <LoginButtonBox>로그인</LoginButtonBox>
+          </TransparentBtn>
+        )}
+        {showModal === true && (
+          <MyInfoModalContainer>
+            <UserEmail>
+              <span>{userInfo.nickname}</span>
+            </UserEmail>
+            <UserPage>
+              <span>마이페이지</span>
+            </UserPage>
+            <LogoutButton>
+              <TransparentBtn onClick={onLogout}>로그아웃</TransparentBtn>
+            </LogoutButton>
+          </MyInfoModalContainer>
+        )}
       </LoginUserButtonContainer>
     </HeaderContainer>
   );
@@ -122,7 +146,7 @@ const LoginUserButtonContainer = styled.div`
 const LoginButtonBox = styled(SearchContainer)`
   min-width: 7.7rem;
   height: 4.2rem;
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.05);
 `;
 
@@ -137,7 +161,6 @@ const MyInfoModalContainer = styled.div`
   top: 50px;
   right: 0px;
   z-index: 10;
-  display: ${(props) => (props.isShow ? "block" : "none")};
   box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   div {
