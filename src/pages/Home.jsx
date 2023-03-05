@@ -1,6 +1,6 @@
 import HotelElement from "element/HotelElement";
 import SkeletonHotelElement from "element/SkeletonHotelElement";
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -19,10 +19,10 @@ const HotelGridWrapper = styled.ul`
 `;
 
 const Home = () => {
-  let houses = undefined;
-  const { isLoading, data } = useQuery("houses", getHouses, {
+  const [houses, setHouses] = useState([]);
+  const { isLoading } = useQuery("houses", getHouses, {
     onSuccess: (response) => {
-      houses = response.data.data;
+      setHouses(response.data.data);
     },
   });
   return (
@@ -44,17 +44,7 @@ const Home = () => {
             <SkeletonHotelElement />
           </>
         ) : (
-          <>
-            <HotelElement />
-            <HotelElement />
-            <HotelElement />
-            <HotelElement />
-            <HotelElement />
-            <HotelElement />
-            <HotelElement />
-            <HotelElement />
-            <HotelElement />
-          </>
+          houses.map((house) => <HotelElement key={house.id} />)
         )}
       </HotelGridWrapper>
     </HomeWrapper>
