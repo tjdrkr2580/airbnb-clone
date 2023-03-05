@@ -17,6 +17,7 @@ import {
 } from "recoil";
 import {
   globalUserInfoState,
+  isFilterState,
   isHotelAddState,
   isLoginModalState,
   isUserState,
@@ -31,6 +32,7 @@ const Header = () => {
   const [isUser, setIsUser] = useRecoilState(isUserState);
   const userInfo = useRecoilValue(globalUserInfoState);
   const reset = useResetRecoilState(globalUserInfoState);
+  const setFilterModal = useSetRecoilState(isFilterState);
 
   const showMyInfo = () => {
     setShowModal(!showModal);
@@ -49,7 +51,7 @@ const Header = () => {
         onClick={() => navigate("/")}
         src={process.env.PUBLIC_URL + "logo.png"}
       />
-      <TransparentBtn>
+      <TransparentBtn onClick={() => setFilterModal(true)}>
         <SearchContainer>
           <SearchText>숙소 검색</SearchText>
           <SearchIconBox>

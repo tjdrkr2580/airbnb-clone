@@ -21,6 +21,11 @@ export const isHotelAddState = atom({
   default: false,
 });
 
+export const isFilterState = atom({
+  key: `state${v4()}`,
+  default: false,
+});
+
 export const globalUserInfoState = atom({
   key: `state${v4()}`,
   default: null,
