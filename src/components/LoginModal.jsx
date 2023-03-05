@@ -29,7 +29,7 @@ const ModalWrapper = styled.div`
   padding: 0 3rem;
 `;
 
-const ModalLayout = styled(motion.section)`
+const ModalLayout = styled(motion.form)`
   position: relative;
   width: 56rem;
   height: 66rem;
@@ -68,7 +68,7 @@ const TitleBox = styled.section`
   }
 `;
 
-const SignForm = styled.form`
+const SignForm = styled.section`
   width: 100%;
   ${flexColumnCenter}
   input {
@@ -87,7 +87,7 @@ const SignForm = styled.form`
 const LoginModal = () => {
   const setIsLoginModal = useSetRecoilState(isLoginModalState);
   const [isSignUp, setIsSignUp] = useState(false);
-  const { register, reset, formState: errors, handleSubmit } = useForm();
+  const { register, reset, formState: errors, handleSubmit, watch } = useForm();
   const modalRef = useRef(null);
   const onLoginToggle = () => {
     setIsSignUp(!isSignUp);
@@ -102,7 +102,12 @@ const LoginModal = () => {
         }
       }}
     >
-      <ModalLayout variants={modalVariants} initial="start" animate="animate">
+      <ModalLayout
+        variants={modalVariants}
+        initial="start"
+        animate="animate"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <TitleBox>
           <IoMdClose size={20} onClick={() => setIsLoginModal(false)} />
           <h1 className="title">로그인 또는 회원 가입</h1>
@@ -111,21 +116,39 @@ const LoginModal = () => {
         {isSignUp === false && (
           <>
             <h2>에어비앤비에 오신 것을 환영합니다.</h2>
-            <SignForm onSubmit={handleSubmit(onSubmit)}>
+            <SignForm>
               <input
                 type="text"
-                {...register("nickname")}
+                {...register("nickname", {
+                  required: true,
+                })}
                 placeholder="닉네임"
               />
-              <input type="text" {...register("email")} placeholder="이메일" />
+              <input
+                type="text"
+                {...register("email", {
+                  required: true,
+                })}
+                placeholder="이메일"
+              />
               <input
                 type="password"
-                {...register("password")}
+                {...register("password", {
+                  required: true,
+                })}
                 placeholder="비밀번호"
               />
-              <input type="password" placeholder="비밀번호 확인" />
+              <input
+                type="password"
+                {...register("passwordConfirm", {
+                  required: true,
+                })}
+                placeholder="비밀번호 확인"
+              />
             </SignForm>
-            <Button type={true}>회원가입</Button>
+            <Button type={true} onClick={handleSubmit(onSubmit)}>
+              회원가입
+            </Button>
             <UnderLine />
             <h1 className="title">혹시 사용하고 계신 계정이 존재한가요?</h1>
             <Button type={false} onClick={onLoginToggle}>

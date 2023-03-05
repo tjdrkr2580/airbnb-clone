@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getCookie } from "utils/cookie/cookie";
+import { useNavigate } from "react-router-dom";
 
 export default class Axios {
   constructor(url) {
@@ -9,10 +10,12 @@ export default class Axios {
 
     this.instance.interceptors.request.use((request) => {
       const token = getCookie("token");
+      const navigate = useNavigate();
       if (token) {
         request.headers.Authorization = `Bearer ${token}`;
       } else {
         alert("재 로그인이 필요합니다.");
+        navigate("/");
       }
     });
   }
