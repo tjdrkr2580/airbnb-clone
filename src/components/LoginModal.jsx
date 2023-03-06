@@ -93,7 +93,7 @@ const SignForm = styled.section`
 
 const LoginModal = () => {
   const setIsLoginModal = useSetRecoilState(isLoginModalState);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true);
   const setGlobalUserInfo = useSetRecoilState(globalUserInfoState);
   const setIsUser = useSetRecoilState(isUserState);
   const { register, reset, formState: errors, handleSubmit } = useForm();

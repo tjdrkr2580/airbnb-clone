@@ -23,20 +23,20 @@ const HotelElement = ({ house }) => {
   return (
     <HotelElementWrapper onClick={() => navigate(`/${house.id}`)}>
       <img
-        src={house.thumbnailUrl !== null ? house.thumbnailUrl : hotel}
+        src={house?.thumbnailUrl !== null ? house?.thumbnailUrl : hotel}
         alt="view"
       />
       <HotelElementTextWrapper>
         <header className="hotel-header">
-          <h1>{house.adminDistrict}, 한국</h1>
+          <h1>{house?.adminDistrict}, 한국</h1>
           {/* <span className="star">
             <AiFillStar size={15} />
             <span>4.8</span>
           </span> */}
         </header>
-        <p>{house.detailAddress}</p>
+        <p>{house?.detailAddress}</p>
         <span className="price">
-          ₩ {house.pricePerDay.toLocaleString("en")} / 박
+          ₩ {house?.pricePerDay.toLocaleString("en")} / 박
         </span>
       </HotelElementTextWrapper>
     </HotelElementWrapper>

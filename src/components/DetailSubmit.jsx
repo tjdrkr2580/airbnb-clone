@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Button from "element/Button";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { setCookie } from "utils/cookie/cookie";
+import { getCookie } from "utils/cookie/cookie";
 import { postDetailRequest } from "utils/api/api";
 import { useNavigate } from "react-router-dom";
 
@@ -86,11 +86,10 @@ const DetailSubmit = ({ houseDetail }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const navigate = useNavigate();
-  const [nightDays, setNightDays] = useState(0);
-  const { register, handleSubmit, watch, setValue } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [price, setPrice] = useState(houseDetail?.pricePerDay);
   const submitMutation = useMutation(
-    (data) => postDetailRequest(data, setCookie("token")),
+    (data) => postDetailRequest(data, getCookie("token")),
     {
       onSuccess: () => {
         console.log("예약 완료!");
@@ -110,7 +109,7 @@ const DetailSubmit = ({ houseDetail }) => {
       peopleCount: data.peopleCount,
       houseId: houseDetail.id,
     };
-    const res = await submitMutation.mutate(postData);
+    const res = await submitMutation.mutateAsync(postData);
     console.log(res);
   };
   useEffect(() => {
@@ -132,7 +131,7 @@ const DetailSubmit = ({ houseDetail }) => {
           }}
         />
         <CustomDatePicker
-          minDate={new Date()}
+          minDate={startDate}
           dateFormat="yyyy. MM. dd"
           selected={endDate}
           locale={ko}
