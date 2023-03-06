@@ -16,21 +16,27 @@ const HotelElementTextWrapper = styled.ul`
   ${HotelElementTextWrapperStyle}
 `;
 
-const HotelElement = () => {
+const HotelElement = ({ data }) => {
   const navigate = useNavigate();
+  console.log(data);
+
+  //별점은 나중에
   return (
     <HotelElementWrapper onClick={() => navigate("/2")}>
-      <img src={hotel} alt="view" />
+      <img
+        src={data.thumbnailUrl !== null ? data.thumbnailUrl : hotel}
+        alt="view"
+      />
       <HotelElementTextWrapper>
         <header className="hotel-header">
-          <h1>인천 부평구, 한국</h1>
-          <span className="star">
+          <h1>{data.adminDistrict}, 한국</h1>
+          {/* <span className="star">
             <AiFillStar size={15} />
             <span>4.8</span>
-          </span>
+          </span> */}
         </header>
-        <p>도심 속 전망</p>
-        <span className="price">₩ 316,233 / 박</span>
+        <p>{data.detailAddress}</p>
+        <span className="price">₩ {data.pricePerDay} / 박</span>
       </HotelElementTextWrapper>
     </HotelElementWrapper>
   );
