@@ -44,7 +44,7 @@ const Home = () => {
             <SkeletonHotelElement />
           </>
         ) : (
-          houses.map((house) => <HotelElement key={house.id} data={house} />)
+          houses.map((house) => <HotelElement key={house.id} house={house} />)
         )}
       </HotelGridWrapper>
     </HomeWrapper>

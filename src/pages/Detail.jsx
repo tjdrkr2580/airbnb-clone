@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { flexColumnCenter, PageMargin } from "utils/style/mixins";
 import { AiFillHeart } from "react-icons/ai";
@@ -7,6 +7,9 @@ import Test from "../assets/hotel.jpg";
 import Carousel from "nuka-carousel/lib/carousel";
 import { AiFillLeftCircle, AiFillRightCircle } from "react-icons/ai";
 import DetailSubmit from "components/DetailSubmit";
+import { useQuery } from "react-query";
+import { detailPatch } from "utils/api/api";
+import { useParams } from "react-router-dom";
 
 const DetailWrapper = styled.section`
   display: flex;
@@ -139,6 +142,14 @@ const TitleComponent = styled.section`
 `;
 
 const Detail = () => {
+  const [houseDetail, setHouseDetail] = useState(null);
+  const { id } = useParams();
+  const { isLoading } = useQuery("houseDetail", () => detailPatch(id), {
+    onSuccess: ({ data }) => {
+      console.log(data);
+    },
+  });
+
   return (
     <DetailWrapper>
       <TitleBox>

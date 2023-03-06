@@ -25,3 +25,8 @@ export const getWishList = (token) => {
   });
   return res;
 };
+
+export const detailPatch = (id) => {
+  const res = axios.get(`/api/houses/${id}`);
+  return res;
+};
