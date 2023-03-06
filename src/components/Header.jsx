@@ -84,7 +84,12 @@ const Header = () => {
             <UserEmail>
               <span>{userInfo.nickname}</span>
             </UserEmail>
-            <UserPage>
+            <UserPage
+              onClick={() => {
+                navigate("/profile");
+                setShowModal(false);
+              }}
+            >
               <span>마이페이지</span>
             </UserPage>
             <LogoutButton>
