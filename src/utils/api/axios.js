@@ -1,39 +1,33 @@
 import axios from "axios";
-import { getCookie } from "utils/cookie/cookie";
-import { useNavigate } from "react-router-dom";
 
 export default class Axios {
-  constructor(url) {
+  constructor() {
     this.instance = axios.create({
-      baseURL: url,
+      baseURL: "http://localhost:3000",
     });
 
-    this.instance.interceptors.request.use((request) => {
-      const token = getCookie("token");
-      const navigate = useNavigate();
-      if (token) {
-        request.headers.Authorization = `Bearer ${token}`;
-      } else {
-        alert("재 로그인이 필요합니다.");
-        navigate("/");
-      }
-    });
+    // this.instance.interceptors.request.use((request) => {
+    //   const token = getCookie("token");
+    //   if (token) {
+    //     request.headers.Authorization = `Bearer ${token}`;
+    //   }
+    // });
   }
 
   get = async (url) => {
     const res = await this.instance.get(url);
-    return res.data;
+    return res;
   };
   post = async (url, data) => {
     const res = await this.instance.post(url, data);
-    return res.data;
+    return res;
   };
   put = async (url, data) => {
     const res = await this.instance.put(url, data);
-    return res.data;
+    return res;
   };
   del = async (url) => {
     const res = await this.instance.delete(url);
-    return res.data;
+    return res;
   };
 }
