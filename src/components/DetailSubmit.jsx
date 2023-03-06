@@ -83,8 +83,10 @@ const TotalComponent = styled.section`
 const CustomDatePicker = styled(DatePicker)``;
 
 const DetailSubmit = ({ houseDetail }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const date = new Date();
+  let oneDay = 24 * 60 * 60 * 1000;
+  const [startDate, setStartDate] = useState(date);
+  const [endDate, setEndDate] = useState(new Date(date.getTime() + oneDay));
   const navigate = useNavigate();
   const [change, setChange] = useState(false);
   const { register, handleSubmit, setValue } = useForm();
@@ -115,6 +117,7 @@ const DetailSubmit = ({ houseDetail }) => {
   };
   useEffect(() => {
     setValue("peopleCount", "1");
+    setChange(true);
   }, []);
 
   return (
@@ -129,7 +132,6 @@ const DetailSubmit = ({ houseDetail }) => {
           placeholderText="체크인"
           onChange={(date) => {
             setStartDate(date);
-            setChange(true);
           }}
         />
         <CustomDatePicker
@@ -140,7 +142,6 @@ const DetailSubmit = ({ houseDetail }) => {
           placeholderText="체크아웃"
           onChange={(date) => {
             setEndDate(date);
-            setChange(true);
           }}
         />
       </DateWrapper>
