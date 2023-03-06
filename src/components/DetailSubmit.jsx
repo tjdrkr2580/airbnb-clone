@@ -117,7 +117,6 @@ const DetailSubmit = ({ houseDetail }) => {
   };
   useEffect(() => {
     setValue("peopleCount", "1");
-    setChange(true);
   }, []);
 
   return (
@@ -132,6 +131,7 @@ const DetailSubmit = ({ houseDetail }) => {
           placeholderText="체크인"
           onChange={(date) => {
             setStartDate(date);
+            setChange(true);
           }}
         />
         <CustomDatePicker
@@ -142,6 +142,7 @@ const DetailSubmit = ({ houseDetail }) => {
           placeholderText="체크아웃"
           onChange={(date) => {
             setEndDate(date);
+            setChange(true);
           }}
         />
       </DateWrapper>
@@ -161,9 +162,11 @@ const DetailSubmit = ({ houseDetail }) => {
         <span className="price-total">
           {" "}
           ₩{" "}
-          {(
-            price * parseInt(endDate.getDate() - startDate.getDate())
-          ).toLocaleString("en")}
+          {change === true
+            ? (
+                price * parseInt(endDate?.getDate() - startDate?.getDate())
+              ).toLocaleString("en")
+            : houseDetail?.pricePerDay.toLocaleString("en")}
         </span>
       </PriceComponent>
       <UnderLine />
@@ -175,7 +178,7 @@ const DetailSubmit = ({ houseDetail }) => {
             ? (
                 price * parseInt(endDate?.getDate() - startDate?.getDate())
               ).toLocaleString("en")
-            : 0}
+            : houseDetail?.pricePerDay.toLocaleString("en")}
         </span>
       </TotalComponent>
     </SubmitComponent>
