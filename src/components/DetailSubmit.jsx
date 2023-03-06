@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { boxBorderRadius, UnderLine } from "utils/style/mixins";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import Button from "element/Button";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { getCookie } from "utils/cookie/cookie";
+import { postDetailRequest } from "utils/api/api";
+import { useNavigate } from "react-router-dom";
 
 const SubmitComponent = styled.form`
   position: sticky;
@@ -77,12 +82,46 @@ const TotalComponent = styled.section`
 
 const CustomDatePicker = styled(DatePicker)``;
 
-const DetailSubmit = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+const DetailSubmit = ({ houseDetail }) => {
+  const date = new Date();
+  let oneDay = 24 * 60 * 60 * 1000;
+  const [startDate, setStartDate] = useState(date);
+  const [endDate, setEndDate] = useState(new Date(date.getTime() + oneDay));
+  const navigate = useNavigate();
+  const [change, setChange] = useState(false);
+  const { register, handleSubmit, setValue } = useForm();
+  const [price, setPrice] = useState(houseDetail?.pricePerDay);
+  const submitMutation = useMutation(
+    (data) => postDetailRequest(data, getCookie("token")),
+    {
+      onSuccess: () => {
+        console.log("예약 완료!");
+        navigate("/");
+      },
+    }
+  );
+
+  const onSubmit = async (data) => {
+    const postData = {
+      checkin: `${startDate.getFullYear()}-${String(
+        startDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`,
+      checkout: `${endDate.getFullYear()}-${String(
+        startDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`,
+      peopleCount: data.peopleCount,
+      houseId: houseDetail.id,
+    };
+    const res = await submitMutation.mutateAsync(postData);
+    console.log(res);
+  };
+  useEffect(() => {
+    setValue("peopleCount", "1");
+  }, []);
+
   return (
-    <SubmitComponent>
-      <h1>₩662,220 / 박</h1>
+    <SubmitComponent onSubmit={handleSubmit(onSubmit)}>
+      <h1>₩ {Number(houseDetail?.pricePerDay).toLocaleString("en")} / 박</h1>
       <DateWrapper>
         <CustomDatePicker
           minDate={new Date()}
@@ -90,28 +129,57 @@ const DetailSubmit = () => {
           selected={startDate}
           locale={ko}
           placeholderText="체크인"
-          onChange={(date) => setStartDate(date)}
+          onChange={(date) => {
+            setStartDate(date);
+            setChange(true);
+          }}
         />
         <CustomDatePicker
-          minDate={new Date()}
+          minDate={startDate}
           dateFormat="yyyy. MM. dd"
           selected={endDate}
           locale={ko}
           placeholderText="체크아웃"
-          onChange={(date) => setEndDate(date)}
+          onChange={(date) => {
+            setEndDate(date);
+            setChange(true);
+          }}
         />
       </DateWrapper>
-      <input type="number" className="people" placeholder="인원" />
+      <input
+        type="number"
+        {...register("peopleCount")}
+        className="people"
+        placeholder="인원"
+      />
       <Button type={true}>예약하기</Button>
       <p className="price-info">예약 확정 전에는 요금이 청구되지 않습니다.</p>
       <PriceComponent>
-        <p className="price">₩360,000 x 1박</p>
-        <span className="price-total">₩360,000</span>
+        <p className="price">
+          ₩ {houseDetail?.pricePerDay?.toLocaleString("en")} x{" "}
+          {endDate.getDate() - startDate.getDate()}박
+        </p>
+        <span className="price-total">
+          {" "}
+          ₩{" "}
+          {change === true
+            ? (
+                price * parseInt(endDate?.getDate() - startDate?.getDate())
+              ).toLocaleString("en")
+            : houseDetail?.pricePerDay.toLocaleString("en")}
+        </span>
       </PriceComponent>
       <UnderLine />
       <TotalComponent>
         <span className="total">총 합계 :</span>
-        <span className="total-price">₩360,000</span>
+        <span className="total-price">
+          ₩{" "}
+          {change === true
+            ? (
+                price * parseInt(endDate?.getDate() - startDate?.getDate())
+              ).toLocaleString("en")
+            : houseDetail?.pricePerDay.toLocaleString("en")}
+        </span>
       </TotalComponent>
     </SubmitComponent>
   );
