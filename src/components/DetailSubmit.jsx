@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import Button from "element/Button";
+import { useForm } from "react-hook-form";
 
 const SubmitComponent = styled.form`
   position: sticky;
@@ -77,9 +78,12 @@ const TotalComponent = styled.section`
 
 const CustomDatePicker = styled(DatePicker)``;
 
-const DetailSubmit = () => {
+const DetailSubmit = ({ houseDetail }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {};
   return (
     <SubmitComponent>
       <h1>₩662,220 / 박</h1>
@@ -101,7 +105,12 @@ const DetailSubmit = () => {
           onChange={(date) => setEndDate(date)}
         />
       </DateWrapper>
-      <input type="number" className="people" placeholder="인원" />
+      <input
+        type="number"
+        {...register("peopleCount")}
+        className="people"
+        placeholder="인원"
+      />
       <Button type={true}>예약하기</Button>
       <p className="price-info">예약 확정 전에는 요금이 청구되지 않습니다.</p>
       <PriceComponent>
