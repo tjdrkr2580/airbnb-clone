@@ -104,10 +104,10 @@ const DetailSubmit = ({ houseDetail }) => {
   const onSubmit = async (data) => {
     const postData = {
       checkin: `${startDate.getFullYear()}-${String(
-        startDate.getMonth()
+        startDate.getMonth() + 1
       ).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`,
       checkout: `${endDate.getFullYear()}-${String(
-        startDate.getMonth()
+        startDate.getMonth() + 1
       ).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`,
       peopleCount: data.peopleCount,
       houseId: houseDetail.id,
