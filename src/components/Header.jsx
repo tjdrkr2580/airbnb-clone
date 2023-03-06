@@ -21,6 +21,7 @@ import {
   isHotelAddState,
   isLoginModalState,
   isUserState,
+  userNamePersistState,
 } from "store/atoms";
 import { removeCookie } from "utils/cookie/cookie";
 
@@ -32,7 +33,9 @@ const Header = () => {
   const [isUser, setIsUser] = useRecoilState(isUserState);
   const userInfo = useRecoilValue(globalUserInfoState);
   const reset = useResetRecoilState(globalUserInfoState);
+  const resetUserName = useResetRecoilState(userNamePersistState);
   const setFilterModal = useSetRecoilState(isFilterState);
+  const userName = useRecoilValue(userNamePersistState);
 
   const showMyInfo = () => {
     setShowModal(!showModal);
@@ -43,6 +46,7 @@ const Header = () => {
     setIsUser(false);
     reset();
     setShowModal(false);
+    resetUserName();
   };
 
   return (
@@ -63,7 +67,7 @@ const Header = () => {
         <TransparentBtn onClick={() => setHotelAdd(true)}>
           <AiOutlinePlusCircle size={20} />
         </TransparentBtn>
-        {isUser === true ? (
+        {userName !== "" ? (
           <TransparentBtn>
             <LoginButtonBox onClick={showMyInfo}>
               <AiOutlineMenu size={16} />
@@ -82,7 +86,7 @@ const Header = () => {
         {showModal === true && (
           <MyInfoModalContainer>
             <UserEmail>
-              <span>{userInfo.nickname}</span>
+              <span>{userName}</span>
             </UserEmail>
             <UserPage
               onClick={() => {

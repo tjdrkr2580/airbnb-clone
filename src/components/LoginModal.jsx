@@ -5,6 +5,7 @@ import {
   globalUserInfoState,
   isLoginModalState,
   isUserState,
+  userNamePersistState,
 } from "store/atoms";
 import styled from "styled-components";
 import { modalVariants } from "utils/animation/variants";
@@ -96,6 +97,7 @@ const LoginModal = () => {
   const [isSignUp, setIsSignUp] = useState(true);
   const setGlobalUserInfo = useSetRecoilState(globalUserInfoState);
   const setIsUser = useSetRecoilState(isUserState);
+  const setLocalUserName = useSetRecoilState(userNamePersistState);
   const { register, reset, formState: errors, handleSubmit } = useForm();
   const modalRef = useRef(null);
   const onLoginToggle = () => {
@@ -118,6 +120,7 @@ const LoginModal = () => {
         nickname: response.data.data.nickname,
       });
       setIsLoginModal(false);
+      setLocalUserName(response.data.data.nickname);
     },
   }); //로그인 mutation
 

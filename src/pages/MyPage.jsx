@@ -102,24 +102,24 @@ function MyPage() {
         <ListTitle>
           <h1>내가 예약한 숙소</h1>
         </ListTitle>
-        <ListBox>
+        {/* <ListBox>
           <HotelElement />
           <HotelElement />
           <HotelElement />
           <HotelElement />
           <HotelElement />
-        </ListBox>
+        </ListBox> */}
       </ListContainer>
 
       <ListContainer>
         <ListTitle>
           <h1>내가 등록한 숙소</h1>
         </ListTitle>
-        <ListBox>
+        {/* <ListBox>
           <HotelElement />
           <HotelElement />
           <HotelElement />
-        </ListBox>
+        </ListBox> */}
       </ListContainer>
     </MyPageContainer>
   );
