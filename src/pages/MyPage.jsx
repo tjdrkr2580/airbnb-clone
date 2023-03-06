@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { PageMargin, HotelGridLayoutStyle } from '../utils/style/mixins';
 import HotelElement from 'element/HotelElement';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { getWishList } from 'utils/api/api';
+import { getCookie } from 'utils/cookie/cookie';
+import { useQuery } from 'react-query';
 
 function MyPage() {
+    const [wishList, setWishList] = useState([]);
+    const token = getCookie('token');
+    const { isLoading } = useQuery('wishList', () => getWishList(token), {
+        onSuccess: (response) => {
+            setWishList(response.data.data);
+        },
+    });
     const settings = {
         dots: true,
-        infinite: true,
+        infinite: wishList.length > 5 ? true : false,
         speed: 500,
         slidesToShow: 5,
         slidesToScroll: 5,
+        slidesPerRows: 1,
+        centerPadding: 0,
         // 반응형
         responsive: [
             {
@@ -45,29 +57,23 @@ function MyPage() {
             },
         ],
     };
-
-    const listLength = 6;
     return (
         <MyPageContainer>
             <ListContainer>
                 <ListTitle>
                     <h1>위시리스트</h1>
                 </ListTitle>
-                {listLength < 6 ? (
-                    <ListBox>
-                        <HotelElement />
-                        <HotelElement />
-                        <HotelElement />
-                        <HotelElement />
-                    </ListBox>
+                {isLoading === true ? (
+                    <Message>로딩중입니다.</Message>
+                ) : wishList.length === 0 ? (
+                    <MessageBox>
+                        <Message>위시리스트가 없습니다.</Message>
+                    </MessageBox>
                 ) : (
                     <SliderStyle {...settings}>
-                        <HotelElement />
-                        <HotelElement />
-                        <HotelElement />
-                        <HotelElement />
-                        <HotelElement />
-                        <HotelElement />
+                        {wishList.map((list) => (
+                            <HotelElement key={list.id} />
+                        ))}
                     </SliderStyle>
                 )}
             </ListContainer>
@@ -126,4 +132,14 @@ const SliderStyle = styled(Slider)`
     .slick-next::before {
         color: black;
     }
+    .slick-track {
+        margin: 0;
+    }
+`;
+
+const MessageBox = styled.div`
+    height: 100px;
+`;
+const Message = styled.span`
+    font-size: 1.5rem;
 `;
