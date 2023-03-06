@@ -86,6 +86,7 @@ const DetailSubmit = ({ houseDetail }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const navigate = useNavigate();
+  const [change, setChange] = useState(false);
   const { register, handleSubmit, setValue } = useForm();
   const [price, setPrice] = useState(houseDetail?.pricePerDay);
   const submitMutation = useMutation(
@@ -128,6 +129,7 @@ const DetailSubmit = ({ houseDetail }) => {
           placeholderText="체크인"
           onChange={(date) => {
             setStartDate(date);
+            setChange(true);
           }}
         />
         <CustomDatePicker
@@ -138,6 +140,7 @@ const DetailSubmit = ({ houseDetail }) => {
           placeholderText="체크아웃"
           onChange={(date) => {
             setEndDate(date);
+            setChange(true);
           }}
         />
       </DateWrapper>
@@ -167,9 +170,11 @@ const DetailSubmit = ({ houseDetail }) => {
         <span className="total">총 합계 :</span>
         <span className="total-price">
           ₩{" "}
-          {(
-            price * parseInt(endDate.getDate() - startDate.getDate())
-          ).toLocaleString("en")}
+          {change === true
+            ? (
+                price * parseInt(endDate?.getDate() - startDate?.getDate())
+              ).toLocaleString("en")
+            : 0}
         </span>
       </TotalComponent>
     </SubmitComponent>
