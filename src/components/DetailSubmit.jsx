@@ -86,6 +86,7 @@ const DetailSubmit = ({ houseDetail }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const navigate = useNavigate();
+  const [nightDays, setNightDays] = useState(0);
   const { register, handleSubmit, watch, setValue } = useForm();
   const [price, setPrice] = useState(houseDetail?.pricePerDay);
   const submitMutation = useMutation(
@@ -100,8 +101,12 @@ const DetailSubmit = ({ houseDetail }) => {
 
   const onSubmit = async (data) => {
     const postData = {
-      checkin: startDate,
-      checkout: endDate,
+      checkin: `${startDate.getFullYear()}-${String(
+        startDate.getMonth()
+      ).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`,
+      checkout: `${endDate.getFullYear()}-${String(
+        startDate.getMonth()
+      ).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`,
       peopleCount: data.peopleCount,
       houseId: houseDetail.id,
     };
@@ -122,7 +127,9 @@ const DetailSubmit = ({ houseDetail }) => {
           selected={startDate}
           locale={ko}
           placeholderText="체크인"
-          onChange={(date) => setStartDate(date)}
+          onChange={(date) => {
+            setStartDate(date);
+          }}
         />
         <CustomDatePicker
           minDate={new Date()}
@@ -130,7 +137,9 @@ const DetailSubmit = ({ houseDetail }) => {
           selected={endDate}
           locale={ko}
           placeholderText="체크아웃"
-          onChange={(date) => setEndDate(date)}
+          onChange={(date) => {
+            setEndDate(date);
+          }}
         />
       </DateWrapper>
       <input
@@ -143,19 +152,25 @@ const DetailSubmit = ({ houseDetail }) => {
       <p className="price-info">예약 확정 전에는 요금이 청구되지 않습니다.</p>
       <PriceComponent>
         <p className="price">
-          ₩ {houseDetail.pricePerDay.toLocaleString("en")} x{" "}
-          {watch().peopleCount}명
+          ₩ {houseDetail?.pricePerDay?.toLocaleString("en")} x{" "}
+          {endDate.getDate() - startDate.getDate()}박
         </p>
         <span className="price-total">
           {" "}
-          ₩ {(price * watch().peopleCount).toLocaleString("en")}
+          ₩{" "}
+          {(
+            price * parseInt(endDate.getDate() - startDate.getDate())
+          ).toLocaleString("en")}
         </span>
       </PriceComponent>
       <UnderLine />
       <TotalComponent>
         <span className="total">총 합계 :</span>
         <span className="total-price">
-          ₩ {(price * watch().peopleCount).toLocaleString("en")}
+          ₩{" "}
+          {(
+            price * parseInt(endDate.getDate() - startDate.getDate())
+          ).toLocaleString("en")}
         </span>
       </TotalComponent>
     </SubmitComponent>
