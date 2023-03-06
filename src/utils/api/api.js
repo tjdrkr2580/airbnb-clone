@@ -30,3 +30,10 @@ export const getDetailPatch = (id) => {
   const res = axios.get(`/api/houses/${id}`);
   return res;
 };
+
+export const postDetailRequest = (data, token) => {
+  const res = axios.post(`/api/reservation`, data, {
+    headers: { Authorization: token },
+  });
+  return res;
+};

@@ -152,8 +152,6 @@ const Detail = () => {
     },
   });
 
-  console.log(houseDetail);
-
   return (
     <DetailWrapper>
       {isLoading === true ? (
@@ -220,14 +218,13 @@ const Detail = () => {
               <LineComponent>
                 <h1>숙소 편의시설</h1>
                 <ul className="grid">
-                  <li>주방</li>
-                  <li>무선 인터넷</li>
-                  <li>헤어 드라이어</li>
-                  <li>필수품목</li>
+                  {houseDetail?.tags.map((tag) => (
+                    <li key={tag.id}>{tag.name}</li>
+                  ))}
                 </ul>
               </LineComponent>
             </ContentComponent>
-            <DetailSubmit pricePerDay={houseDetail?.pricePerDay} />
+            <DetailSubmit houseDetail={houseDetail} />
           </MainComponent>
         </>
       )}

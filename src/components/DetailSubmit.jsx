@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { boxBorderRadius, UnderLine } from "utils/style/mixins";
 import DatePicker from "react-datepicker";
@@ -6,6 +6,10 @@ import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import Button from "element/Button";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { setCookie } from "utils/cookie/cookie";
+import { postDetailRequest } from "utils/api/api";
+import { useNavigate } from "react-router-dom";
 
 const SubmitComponent = styled.form`
   position: sticky;
@@ -81,12 +85,36 @@ const CustomDatePicker = styled(DatePicker)``;
 const DetailSubmit = ({ houseDetail }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+  const { register, handleSubmit, watch, setValue } = useForm();
+  const [price, setPrice] = useState(houseDetail?.pricePerDay);
+  const submitMutation = useMutation(
+    (data) => postDetailRequest(data, setCookie("token")),
+    {
+      onSuccess: () => {
+        console.log("예약 완료!");
+        navigate("/");
+      },
+    }
+  );
 
-  const onSubmit = (data) => {};
+  const onSubmit = async (data) => {
+    const postData = {
+      checkin: startDate,
+      checkout: endDate,
+      peopleCount: data.peopleCount,
+      houseId: houseDetail.id,
+    };
+    const res = await submitMutation.mutate(postData);
+    console.log(res);
+  };
+  useEffect(() => {
+    setValue("peopleCount", "1");
+  }, []);
+
   return (
-    <SubmitComponent>
-      <h1>₩662,220 / 박</h1>
+    <SubmitComponent onSubmit={handleSubmit(onSubmit)}>
+      <h1>₩ {Number(houseDetail?.pricePerDay).toLocaleString("en")} / 박</h1>
       <DateWrapper>
         <CustomDatePicker
           minDate={new Date()}
@@ -114,13 +142,21 @@ const DetailSubmit = ({ houseDetail }) => {
       <Button type={true}>예약하기</Button>
       <p className="price-info">예약 확정 전에는 요금이 청구되지 않습니다.</p>
       <PriceComponent>
-        <p className="price">₩360,000 x 1박</p>
-        <span className="price-total">₩360,000</span>
+        <p className="price">
+          ₩ {houseDetail.pricePerDay.toLocaleString("en")} x{" "}
+          {watch().peopleCount}명
+        </p>
+        <span className="price-total">
+          {" "}
+          ₩ {(price * watch().peopleCount).toLocaleString("en")}
+        </span>
       </PriceComponent>
       <UnderLine />
       <TotalComponent>
         <span className="total">총 합계 :</span>
-        <span className="total-price">₩360,000</span>
+        <span className="total-price">
+          ₩ {(price * watch().peopleCount).toLocaleString("en")}
+        </span>
       </TotalComponent>
     </SubmitComponent>
   );

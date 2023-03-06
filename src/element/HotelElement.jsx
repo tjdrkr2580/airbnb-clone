@@ -35,7 +35,9 @@ const HotelElement = ({ house }) => {
           </span> */}
         </header>
         <p>{house.detailAddress}</p>
-        <span className="price">₩ {house.pricePerDay} / 박</span>
+        <span className="price">
+          ₩ {house.pricePerDay.toLocaleString("en")} / 박
+        </span>
       </HotelElementTextWrapper>
     </HotelElementWrapper>
   );
