@@ -166,12 +166,14 @@ const HouseImgContainer = styled.div`
     grid-template-columns: 1fr 1fr;
   }
 `;
+
 const ThumbnailInput = styled.input`
   width: 70%;
   padding-left: 1rem;
   font-size: 1.2rem;
 `;
 
+const HouseFacilityContainer = styled(AreaCheckContainer)``;
 const HouseFacilityBoxContainer = styled(AreaCheckBoxContainer)``;
 const FacilityCheckBox = styled(AreaCheckBox)`
   div {
