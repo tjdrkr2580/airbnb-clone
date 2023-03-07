@@ -5,7 +5,6 @@ import {
   HotelElementWrapperStyle,
 } from "utils/style/mixins";
 import hotel from "../assets/hotel.jpg";
-import { AiFillStar } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 const HotelElementWrapper = styled.li`
@@ -29,10 +28,6 @@ const HotelElement = ({ house }) => {
       <HotelElementTextWrapper>
         <header className="hotel-header">
           <h1>{house?.adminDistrict}, 한국</h1>
-          {/* <span className="star">
-            <AiFillStar size={15} />
-            <span>4.8</span>
-          </span> */}
         </header>
         <p>{house?.detailAddress}</p>
         <span className="price">

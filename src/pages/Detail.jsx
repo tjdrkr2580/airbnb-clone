@@ -119,7 +119,7 @@ const LineComponent = styled.section`
   }
 
   h1 {
-    margin-bottom: 3rem;
+    margin: 2rem 0 4rem 0;
 
     font-size: 2.2rem;
   }
@@ -141,6 +141,12 @@ const TitleComponent = styled.section`
     object-position: center;
     border-radius: 50%;
   }
+`;
+
+const Tag = styled.section`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 `;
 
 const Detail = () => {
@@ -219,7 +225,10 @@ const Detail = () => {
                 <h1>숙소 편의시설</h1>
                 <ul className="grid">
                   {houseDetail?.tags.map((tag) => (
-                    <li key={tag.id}>{tag.name}</li>
+                    <Tag>
+                      <img src={tag.imageURL} alt="tag" />
+                      <li key={tag.id}>{tag.name}</li>
+                    </Tag>
                   ))}
                 </ul>
               </LineComponent>
