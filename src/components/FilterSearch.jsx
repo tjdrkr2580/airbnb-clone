@@ -5,9 +5,12 @@ import { isFilterState } from 'store/atoms';
 import styled from 'styled-components';
 import { modalVariants } from 'utils/animation/variants';
 import { boxBorderRadius, flexColumnCenter, flexRowCenter } from 'utils/style/mixins';
-import { IoMdClose, IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from 'react-icons/io';
+import { IoMdClose } from 'react-icons/io';
 import { useState } from 'react';
 import Button from 'element/Button';
+import SelectArea from './SelectArea';
+import CountPeople from './CountPeople';
+import { useForm } from 'react-hook-form';
 
 const ModalWrapper = styled.div`
     z-index: 999;
@@ -30,7 +33,7 @@ const ModalLayout = styled(motion.form)`
     height: 66rem;
     ${boxBorderRadius}
     ${flexColumnCenter}
-  background-color: white;
+    background-color: white;
     display: flex;
     flex-direction: column;
     padding: 0 3rem;
@@ -69,9 +72,25 @@ const SearchForm = styled.form`
     span {
         width: 100%;
         text-align: left;
-        line-height: 3rem;
+        line-height: 4rem;
         font-size: 1.5rem;
         margin-top: 1rem;
+    }
+`;
+
+const PriceContainer = styled.div`
+    ${flexRowCenter}
+    width: 100%;
+    input {
+        width: 150rem;
+        height: 4rem;
+        border: 0.075rem solid ${(props) => props.theme.selectColor2};
+        ${boxBorderRadius}
+        font-size: 1.2rem;
+    }
+    span {
+        text-align: center;
+        font-size: 2rem;
     }
 `;
 
@@ -80,6 +99,7 @@ const PeopleCountContainer = styled.div`
     width: 100%;
     justify-content: space-between;
     padding: 0 10rem;
+    margin-bottom: 3rem;
     span {
         margin-top: 0;
         line-height: 3rem;
@@ -93,15 +113,19 @@ const PeopleCountContainer = styled.div`
     }
 `;
 
-const CountText = styled.span`
-    padding: 0 3rem;
-`;
-
 const FilterSearch = () => {
     const setFilterModal = useSetRecoilState(isFilterState);
     const modalRef = useRef(null);
     const [count, setCount] = useState(0);
+    const [area, setArea] = useState('');
+    const { register, reset, formState: errors, handleSubmit } = useForm();
 
+    const onSubmit = (data) => {
+        console.log(data);
+    };
+    console.log(area);
+    console.log(count);
+    console.log(errors);
     return (
         <ModalWrapper
             ref={modalRef}
@@ -118,31 +142,21 @@ const FilterSearch = () => {
                     <section />
                 </TitleBox>
 
-                <SearchForm>
+                <SearchForm onSubmit={handleSubmit(onSubmit)}>
                     <span>가격 범위</span>
-                    <div>
-                        <input></input>
-                        <input></input>
-                    </div>
+                    <PriceContainer>
+                        <input type="text" {...register('minPrice', { required: true })} />
+                        <span>~</span>
+                        <input type="text" {...register('maxPrice', { required: true })} />
+                    </PriceContainer>
                     <span>지역 선택</span>
-                    <div></div>
+                    <SelectArea area={area} setArea={setArea} />
                     <span>날짜 선택</span>
-                    <div>
-                        <input></input>
-                        <input></input>
-                    </div>
+                    <div></div>
                     <span>인원 선택</span>
                     <PeopleCountContainer>
                         <span>인원수</span>
-                        <div>
-                            <label onClick={() => setCount(count - 1)}>
-                                <IoIosArrowDropleftCircle size={20} />
-                            </label>
-                            <CountText>{count}</CountText>
-                            <label onClick={() => setCount(count + 1)}>
-                                <IoIosArrowDroprightCircle size={20} />
-                            </label>
-                        </div>
+                        <CountPeople count={count} setCount={setCount} />
                     </PeopleCountContainer>
                     <Button type={true} isBackground={true}>
                         검색

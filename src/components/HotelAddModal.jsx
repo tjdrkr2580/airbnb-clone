@@ -4,17 +4,17 @@ import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { modalVariants } from 'utils/animation/variants';
 import { boxBorderRadius, flexColumnCenter, flexRowCenter } from 'utils/style/mixins';
-import { IoMdClose, IoIosArrowDroprightCircle, IoIosArrowDropleftCircle } from 'react-icons/io';
+import { IoMdClose } from 'react-icons/io';
 import { isHotelAddState } from 'store/atoms';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import { useState } from 'react';
 import Button from 'element/Button';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { postHouses } from 'utils/api/api';
 import { getCookie } from 'utils/cookie/cookie';
+import SelectArea from './SelectArea';
+import { AreaCheckContainer, AreaCheckBoxContainer, AreaCheckBox } from './SelectArea';
+import CountPeople from './CountPeople';
 
 const ModalWrapper = styled.div`
     z-index: 999;
@@ -79,37 +79,6 @@ const HotelAddForm = styled.form`
     }
 `;
 
-const AreaCheckContainer = styled.div`
-    ${flexColumnCenter}
-    width: 95%;
-`;
-
-const AreaCheckBoxContainer = styled(Slider)`
-    width: 95%;
-    position: relative;
-    .slick-prev::before,
-    .slick-next::before {
-        color: #747474;
-    }
-`;
-
-const AreaCheckBox = styled.div`
-    line-height: 4rem;
-    text-align: center;
-    cursor: pointer;
-    div {
-        margin: 0.5rem;
-        border: 0.075rem solid ${(props) => props.theme.selectColor2};
-        ${boxBorderRadius}
-        font-size: 1.2rem;
-    }
-`;
-
-const AreaBox = styled.div`
-    background-color: ${(props) => props.isAreaClick && props.theme.selectColor2};
-    color: ${(props) => props.isAreaClick && 'white'}; ;
-`;
-
 const InputContainer = styled.div`
     width: 100%;
     input {
@@ -144,10 +113,6 @@ const PeopleCountContainer = styled.div`
     }
 `;
 
-const CountText = styled.span`
-    padding: 0 3rem;
-`;
-
 const HouseImgContainer = styled.div`
     ${flexRowCenter};
     width: 100%;
@@ -158,12 +123,14 @@ const HouseImgContainer = styled.div`
         grid-template-columns: 1fr 1fr;
     }
 `;
+
 const ThumbnailInput = styled.input`
     width: 70%;
     padding-left: 1rem;
     font-size: 1.2rem;
 `;
 
+const HouseFacilityContainer = styled(AreaCheckContainer)``;
 const HouseFacilityBoxContainer = styled(AreaCheckBoxContainer)``;
 const FacilityCheckBox = styled(AreaCheckBox)`
     div {
@@ -201,15 +168,7 @@ const HotelAddModal = () => {
 
     // 추후 관리자페이지에서 원하는 태그 등록
     const houseFacility = ['편의1', '편의2', '편의3', '편의4', '편의5', '편의6', '편의7', '편의8', '편의9', '편의10', '편의11', '편의12'];
-    const houseArea = ['서울특별시', '부산광역시', '대구광역시', '광주광역시', '인천광역시', '대전광역시', '울산광역시', '제주특별시', '경기도', '강원도', '충청남도', '충정북도', '전라남도', '전라북도', '경상남도', '경상북도'];
 
-    const areaSettings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 5,
-    };
     const facilitySettings = {
         dots: false,
         infinite: true,
@@ -283,15 +242,7 @@ const HotelAddModal = () => {
 
                 <HotelAddForm onSubmit={handleSubmit(onSubmit)}>
                     <span>지역선택</span>
-                    <AreaCheckContainer>
-                        <AreaCheckBoxContainer {...areaSettings}>
-                            {houseArea.map((item, i) => (
-                                <AreaCheckBox key={i} onClick={() => setArea(item)}>
-                                    <AreaBox isAreaClick={area === item}>{item}</AreaBox>
-                                </AreaCheckBox>
-                            ))}
-                        </AreaCheckBoxContainer>
-                    </AreaCheckContainer>
+                    <SelectArea area={area} setArea={setArea} />
 
                     <span>상세 주소</span>
                     <InputContainer>
@@ -306,15 +257,7 @@ const HotelAddModal = () => {
                     <span>최대 인원 선택</span>
                     <PeopleCountContainer>
                         <span>인원수</span>
-                        <div>
-                            <label onClick={() => setCount(count - 1)}>
-                                <IoIosArrowDropleftCircle size={20} />
-                            </label>
-                            <CountText>{count}</CountText>
-                            <label onClick={() => setCount(count + 1)}>
-                                <IoIosArrowDroprightCircle size={20} />
-                            </label>
-                        </div>
+                        <CountPeople count={count} setCount={setCount} />
                     </PeopleCountContainer>
 
                     <span>이미지 업로드</span>
@@ -323,7 +266,7 @@ const HotelAddModal = () => {
                     </HouseImgContainer>
 
                     <span>숙소 편의시설</span>
-                    <AreaCheckContainer>
+                    <HouseFacilityContainer>
                         <HouseFacilityBoxContainer {...facilitySettings}>
                             {houseFacility.map((item, i) => (
                                 <FacilityCheckBox key={i} onClick={() => faciltyClick(i)}>
@@ -331,7 +274,7 @@ const HotelAddModal = () => {
                                 </FacilityCheckBox>
                             ))}
                         </HouseFacilityBoxContainer>
-                    </AreaCheckContainer>
+                    </HouseFacilityContainer>
 
                     <span>숙소 설명</span>
                     <HoustIntroTextarea {...register('content', { required: true })}></HoustIntroTextarea>
