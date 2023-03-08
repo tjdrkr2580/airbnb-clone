@@ -13,13 +13,8 @@ export const postSignin = (data) => {
 };
 
 export const getHouses = (data) => {
-    console.log('api : ', data);
-    //console.log(filter);
     let res = '';
-    if (data.id && data.filter) {
-        console.log('id + filter 로 house get');
-        res = axios.get(`api/houses?peopleCount=${data.filter.peopleCount}&minPrice=${data.filter.minPrice}&maxPrice=${data.filter.maxPrice}&startDate=${data.filter.startDate}&endDate=${data.filter.endDate}&page=0&size=10&sortBy=id&isAsc=false&userId=${data.id}`);
-    } else if (data.id) {
+    if (data.id) {
         console.log('id로 house get');
         res = axios.get(`api/houses?userId=${data.id}`);
     } else {
@@ -88,8 +83,24 @@ export const postWish = (id, token) => {
         `api/houses/wish/${id}`,
         {},
         {
-            headers: { Authorization: token, 'Content-Type': 'multipart/form-data' },
+            headers: { Authorization: token },
         }
     );
+    return res;
+};
+
+// 검색시 api
+export const getSearchHouses = (data) => {
+    console.log('검색 : ', data);
+    let res = '';
+    if (data.id) {
+        console.log('id + filter 로 search house get');
+        res = axios.get(
+            `api/houses?adminDistrict=${data.filter.adminDistrict}&peopleCount=${data.filter.peopleCount}&minPrice=${data.filter.minPrice}&maxPrice=${data.filter.maxPrice}&startDate=${data.filter.startDate}&endDate=${data.filter.endDate}&page=0&size=10&sortBy=id&isAsc=false&userId=${data.id}`
+        );
+    } else {
+        console.log('그냥 search house get');
+        res = axios.get(`api/houses?adminDistrict=${data.filter.adminDistrict}&peopleCount=${data.filter.peopleCount}&minPrice=${data.filter.minPrice}&maxPrice=${data.filter.maxPrice}&startDate=${data.filter.startDate}&endDate=${data.filter.endDate}&page=0&size=10&sortBy=id&isAsc=false`);
+    }
     return res;
 };
