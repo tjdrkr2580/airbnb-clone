@@ -14,8 +14,8 @@ export default class Axios {
     // });
   }
 
-  get = async (url) => {
-    const res = await this.instance.get(url);
+  get = async (url, option) => {
+    const res = await this.instance.get(url, option);
     return res;
   };
   post = async (url, data, option) => {
