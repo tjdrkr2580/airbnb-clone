@@ -3,7 +3,8 @@ import axios from "axios";
 export default class Axios {
   constructor() {
     this.instance = axios.create({
-      baseURL: "http://localhost:3000",
+      baseURL:
+        "https://port-0-airbnb-practice-108dypx2aldzyvyjq.sel3.cloudtype.app/",
     });
 
     // this.instance.interceptors.request.use((request) => {
