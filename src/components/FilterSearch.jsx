@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import React, { useRef } from 'react';
-import { useSetRecoilState } from 'recoil';
+import React, { useEffect, useRef } from 'react';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import { isFilterState } from 'store/atoms';
 import styled from 'styled-components';
 import { modalVariants } from 'utils/animation/variants';
@@ -11,10 +11,9 @@ import Button from 'element/Button';
 import SelectArea from './SelectArea';
 import CountPeople from './CountPeople';
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
-import { getHouses } from 'utils/api/api';
-import { useRecoilState } from 'recoil';
-import { userNamePersistState } from 'store/atoms';
+import { isSearchState, searchValueState } from 'store/atoms';
+import { DateWrapper, CustomDatePicker } from './DetailSubmit';
+import { ko } from 'date-fns/esm/locale';
 
 const ModalWrapper = styled.div`
     z-index: 999;
@@ -104,26 +103,35 @@ const FilterSearch = () => {
     const [count, setCount] = useState(0);
     const [area, setArea] = useState('');
     const { register, reset, formState: errors, handleSubmit } = useForm();
-    const localUserName = useRecoilState(userNamePersistState);
-    const [filterValue, setFilterValue] = useState();
+    const setIsSearch = useSetRecoilState(isSearchState);
+    const setSearchValue = useSetRecoilState(searchValueState);
+    const isSearch = useRecoilState(isSearchState);
 
+    const date = new Date();
+    let oneDay = 24 * 60 * 60 * 1000;
+    const [startDate, setStartDate] = useState(date);
+    const [endDate, setEndDate] = useState(new Date(date.getTime() + oneDay));
+    const [change, setChange] = useState(false);
+
+    useEffect(() => {
+        setIsSearch(false);
+        setSearchValue({});
+    }, [isSearch]);
+    console.log('start', startDate);
+    console.log('end', endDate);
     const onSubmit = (data) => {
         const value = {
             minPrice: data.minPrice,
             maxPrice: data.maxPrice,
             peopleCount: count,
             adminDistrict: area,
-            startDate: '2023-03-04',
-            endDate: '2023-03-10',
+            startDate: `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}`,
+            endDate: `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}-${String(endDate.getDate()).padStart(2, '0')}`,
         };
-        setFilterValue(value);
+        setIsSearch(true);
+        setSearchValue(value);
+        setFilterModal(false);
     };
-
-    const { isLoading } = useQuery('serchHouses', () => getHouses(localUserName[0].id !== undefined && { id: localUserName[0].id, filter: filterValue }), {
-        onSuccess: (response) => {
-            console.log('rr', response);
-        },
-    });
 
     return (
         <ModalWrapper
@@ -151,6 +159,30 @@ const FilterSearch = () => {
                     <span>지역 선택</span>
                     <SelectArea area={area} setArea={setArea} />
                     <span>날짜 선택</span>
+                    <DateWrapper>
+                        <CustomDatePicker
+                            minDate={new Date()}
+                            dateFormat="yyyy. MM. dd"
+                            selected={startDate}
+                            locale={ko}
+                            placeholderText="체크인"
+                            onChange={(date) => {
+                                setStartDate(date);
+                                setChange(true);
+                            }}
+                        />
+                        <CustomDatePicker
+                            minDate={startDate}
+                            dateFormat="yyyy. MM. dd"
+                            selected={endDate}
+                            locale={ko}
+                            placeholderText="체크아웃"
+                            onChange={(date) => {
+                                setEndDate(date);
+                                setChange(true);
+                            }}
+                        />
+                    </DateWrapper>
                     <div></div>
                     <span>인원 선택</span>
                     <CountPeople count={count} setCount={setCount} margin={3} />
