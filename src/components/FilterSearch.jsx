@@ -11,6 +11,10 @@ import Button from 'element/Button';
 import SelectArea from './SelectArea';
 import CountPeople from './CountPeople';
 import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
+import { getHouses } from 'utils/api/api';
+import { useRecoilState } from 'recoil';
+import { userNamePersistState } from 'store/atoms';
 
 const ModalWrapper = styled.div`
     z-index: 999;
@@ -100,13 +104,27 @@ const FilterSearch = () => {
     const [count, setCount] = useState(0);
     const [area, setArea] = useState('');
     const { register, reset, formState: errors, handleSubmit } = useForm();
+    const localUserName = useRecoilState(userNamePersistState);
+    const [filterValue, setFilterValue] = useState();
 
     const onSubmit = (data) => {
-        console.log(data);
+        const value = {
+            minPrice: data.minPrice,
+            maxPrice: data.maxPrice,
+            peopleCount: count,
+            adminDistrict: area,
+            startDate: '2023-03-04',
+            endDate: '2023-03-10',
+        };
+        setFilterValue(value);
     };
-    console.log(area);
-    console.log(count);
-    console.log(errors);
+
+    const { isLoading } = useQuery('serchHouses', () => getHouses(localUserName[0].id !== undefined && { id: localUserName[0].id, filter: filterValue }), {
+        onSuccess: (response) => {
+            console.log('rr', response);
+        },
+    });
+
     return (
         <ModalWrapper
             ref={modalRef}
