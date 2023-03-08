@@ -9,7 +9,7 @@ import { isHotelAddState } from 'store/atoms';
 import { useState } from 'react';
 import Button from 'element/Button';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { postHouses, getTags } from 'utils/api/api';
 import { getCookie } from 'utils/cookie/cookie';
 import SelectArea from './SelectArea';
@@ -109,7 +109,11 @@ const ThumbnailInput = styled.input`
 
 const HouseFacilityContainer = styled(AreaCheckContainer)``;
 const HouseFacilityBoxContainer = styled(AreaCheckBoxContainer)``;
-const FacilityCheckBox = styled(AreaCheckBox)``;
+const FacilityCheckBox = styled(AreaCheckBox)`
+    div {
+        border: ${(props) => (props.isSelected ? `0.25rem solid ${props.theme.mainColor}` : `0.075rem solid ${props.theme.selectColor2}`)};
+    }
+`;
 
 const FacilityBox = styled.div`
     ${flexRowCenter}
@@ -127,8 +131,6 @@ const FacilityBox = styled.div`
         word-wrap: break-word;
         line-height: $line-height;
     }
-    background-color: ${(props) => props.isTagClick && props.theme.selectColor2};
-    color: ${(props) => props.isTagClick && 'white'}; ;
 `;
 
 const HoustIntroTextarea = styled.textarea`
@@ -180,7 +182,6 @@ const HotelAddModal = () => {
         const others = Array.from(e.target.files).slice(1);
         setOtherImg([...others]);
     };
-    //console.log('otherImg', otherImg);
 
     // 태그 클릭시
     const faciltyClick = (i) => {
@@ -195,10 +196,12 @@ const HotelAddModal = () => {
         });
     };
 
+    const queryClient = useQueryClient();
     const submitMutation = useMutation((data) => postHouses(data, getCookie('token')), {
         onSuccess: () => {
             console.log('등록 완료!');
             setIsHotelAdd(false);
+            queryClient.invalidateQueries('houses');
         },
     });
 
@@ -261,14 +264,17 @@ const HotelAddModal = () => {
                             {isLoading === true ? (
                                 <div>로딩중</div>
                             ) : (
-                                tagList.map((list) => (
-                                    <FacilityCheckBox key={list.id} onClick={() => faciltyClick(list.id)}>
-                                        <FacilityBox isTagClick={false}>
-                                            <img src={list.imageURL}></img>
-                                            <p>{list.name}</p>
-                                        </FacilityBox>
-                                    </FacilityCheckBox>
-                                ))
+                                tagList.map((list) => {
+                                    const isSelected = tag.includes(list.id);
+                                    return (
+                                        <FacilityCheckBox key={list.id} onClick={() => faciltyClick(list.id)} isSelected={isSelected}>
+                                            <FacilityBox>
+                                                <img src={list.imageURL}></img>
+                                                <p>{list.name}</p>
+                                            </FacilityBox>
+                                        </FacilityCheckBox>
+                                    );
+                                })
                             )}
                         </HouseFacilityBoxContainer>
                     </HouseFacilityContainer>

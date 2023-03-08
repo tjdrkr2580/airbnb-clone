@@ -39,8 +39,6 @@ export const postDetailRequest = (data, token) => {
 };
 
 export const postHouses = (data, token) => {
-    console.log('api : ', data);
-    console.log('api token : ', token);
     const res = axios.post(`api/houses`, data, {
         headers: { Authorization: token, 'Content-Type': 'multipart/form-data' },
     });

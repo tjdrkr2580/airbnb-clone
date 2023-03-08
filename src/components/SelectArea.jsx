@@ -24,14 +24,10 @@ export const AreaCheckBox = styled.div`
     cursor: pointer;
     div {
         margin: 0.5rem;
-        border: 0.075rem solid ${(props) => props.theme.selectColor2};
+        border: ${(props) => (props.isAreaClick ? `0.25rem solid ${props.theme.mainColor}` : `0.075rem solid ${props.theme.selectColor2}`)};
         ${boxBorderRadius}
         font-size: 1.2rem;
     }
-`;
-const AreaBox = styled.div`
-    background-color: ${(props) => props.isAreaClick && props.theme.selectColor2};
-    color: ${(props) => props.isAreaClick && 'white'}; ;
 `;
 
 function SelectArea({ area, setArea }) {
@@ -48,8 +44,8 @@ function SelectArea({ area, setArea }) {
         <AreaCheckContainer>
             <AreaCheckBoxContainer {...areaSettings}>
                 {houseArea.map((item, i) => (
-                    <AreaCheckBox key={i} onClick={() => setArea(item)}>
-                        <AreaBox isAreaClick={area === item}>{item}</AreaBox>
+                    <AreaCheckBox key={i} onClick={() => setArea(item)} isAreaClick={area === item}>
+                        <div>{item}</div>
                     </AreaCheckBox>
                 ))}
             </AreaCheckBoxContainer>
