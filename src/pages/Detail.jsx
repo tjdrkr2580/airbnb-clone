@@ -225,7 +225,7 @@ const Detail = () => {
                 <h1>숙소 편의시설</h1>
                 <ul className="grid">
                   {houseDetail?.tags.map((tag) => (
-                    <Tag>
+                    <Tag key={tag.id}>
                       <img src={tag.imageURL} alt="tag" />
                       <li key={tag.id}>{tag.name}</li>
                     </Tag>

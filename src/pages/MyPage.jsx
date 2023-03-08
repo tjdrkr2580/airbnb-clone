@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   PageMargin,
@@ -9,9 +9,9 @@ import HotelElement from "element/HotelElement";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getWishList, getRegistration } from "utils/api/api";
+import { getWishList, getRegistration, getReservation } from "utils/api/api";
 import { getCookie } from "utils/cookie/cookie";
-import { useQueries, useQuery } from "react-query";
+import { useQueries } from "react-query";
 import { useResetRecoilState, useSetRecoilState } from "recoil";
 import {
   globalUserInfoState,
@@ -25,24 +25,11 @@ function MyPage() {
   const navigate = useNavigate();
   const [wishList, setWishList] = useState([]);
   const [registList, setregistList] = useState([]);
+  const [reserList, setreserList] = useState([]);
   const token = getCookie("token");
   const setIsUser = useSetRecoilState(isUserState);
   const resetInfo = useResetRecoilState(globalUserInfoState);
   const setIsLoginModal = useSetRecoilState(isLoginModalState);
-  // const { isLoading } = useQuery("wishList", () => getWishList(token), {
-  //   onSuccess: (response) => {
-  //     setWishList(response.data.data);
-  //   },
-  //   onError: (error) => {
-  //     if (error.response?.data.code === 401) {
-  //       alert("재 로그인이 필요합니다!");
-  //       setIsUser(false);
-  //       resetInfo();
-  //       navigate("/");
-  //       setIsLoginModal(true);
-  //     }
-  //   },
-  // });
   const profileQueries = useQueries([
     {
       queryKey: "wish",
@@ -58,10 +45,13 @@ function MyPage() {
         setregistList(data.data);
       },
     },
-    // {
-    //   queryKey : "own",
-    //   queryFn: () => getWishList(token)
-    // },
+    {
+      queryKey: "reservation",
+      queryFn: () => getReservation(token),
+      onSuccess: ({ data }) => {
+        setreserList(data.data);
+      },
+    },
   ]);
   const settings = {
     dots: true,
@@ -142,7 +132,7 @@ function MyPage() {
             <SkeletonHotelElement />
             <SkeletonHotelElement />
           </SliderStyle>
-        ) : registList.length === 0 ? (
+        ) : profileQueries[1].isLoading === false && registList.length === 0 ? (
           <MessageBox>
             <Message>등록한 숙소가 없습니다.</Message>
           </MessageBox>
@@ -154,22 +144,33 @@ function MyPage() {
           </SliderStyle>
         )}
       </ListContainer>
+      <ListContainer>
+        <ListTitle>
+          <h1>내가 예약한 숙소</h1>
+        </ListTitle>
+        {profileQueries[2].isLoading === true ? (
+          <SliderStyle {...settings}>
+            <SkeletonHotelElement />
+            <SkeletonHotelElement />
+            <SkeletonHotelElement />
+            <SkeletonHotelElement />
+            <SkeletonHotelElement />
+          </SliderStyle>
+        ) : profileQueries[2].isLoading === false && reserList.length === 0 ? (
+          <MessageBox>
+            <Message>예약한 숙소가 없습니다.</Message>
+          </MessageBox>
+        ) : (
+          <SliderStyle {...settings}>
+            {reserList.map((list) => (
+              <HotelElement key={list.id} house={list.house} />
+            ))}
+          </SliderStyle>
+        )}
+      </ListContainer>
     </MyPageContainer>
   );
 }
-
-// <ListContainer>
-// <ListTitle>
-// <h1>내가 예약한 숙소</h1>
-// </ListTitle>
-// <ListBox>
-//  <HotelElement />
-//  <HotelElement />
-//  <HotelElement />
-//  <HotelElement />
-//  <HotelElement />
-// </ListBox>
-// </ListContainer>
 
 export default MyPage;
 
@@ -178,11 +179,11 @@ const MyPageContainer = styled.div`
 `;
 const ListContainer = styled.div`
   margin: 0px 40px;
+  margin-top: 7rem;
 `;
 
 const ListTitle = styled.div`
   h1 {
-    padding-top: 3rem;
     margin-bottom: 1.5rem;
     font-size: 3.2rem;
   }
