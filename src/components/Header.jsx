@@ -208,10 +208,6 @@ const UserEmail = styled.div`
   height: 33.3%;
   ${flexColumnCenter};
   width: 100%;
-  transition: 0.2s background-color;
-  &:hover {
-    background-color: ${(props) => props.theme.borderColor};
-  }
 `;
 const UserPage = styled.div`
   width: 100%;
