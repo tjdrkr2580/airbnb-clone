@@ -53,3 +53,8 @@ export const getRegistration = (token) => {
     });
     return res;
 };
+
+export const getTags = () => {
+    const res = axios.get('api/tags');
+    return res;
+};
