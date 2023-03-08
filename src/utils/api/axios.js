@@ -27,7 +27,7 @@ export default class Axios {
     return res;
   };
   del = async (url, option) => {
-    const res = await this.instance.delete(url);
+    const res = await this.instance.delete(url, option);
     return res;
   };
   getToken = async (url, data) => {

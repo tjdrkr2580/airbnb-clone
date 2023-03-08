@@ -20,7 +20,7 @@ import Button from "element/Button";
 import { UnderLine } from "utils/style/mixins";
 import { useMutation } from "react-query";
 import { postSignin, postSignup } from "utils/api/api";
-import { setCookie } from "utils/cookie/cookie";
+import { getCookie, setCookie } from "utils/cookie/cookie";
 
 const ModalWrapper = styled.div`
   z-index: 999;
@@ -123,6 +123,7 @@ const LoginModal = () => {
       setLocalUserName({
         id: response.data.data.id,
         nickname: response.data.data.nickname,
+        token: getCookie("token"),
       });
     },
   }); //로그인 mutation

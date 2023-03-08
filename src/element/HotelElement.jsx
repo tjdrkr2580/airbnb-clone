@@ -6,13 +6,14 @@ import {
 } from "utils/style/mixins";
 import hotel from "../assets/hotel.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userNamePersistState, isLoginModalState } from "store/atoms";
 import { useMutation, useQueryClient } from "react-query";
 import { postWish } from "utils/api/api";
 import { getCookie } from "utils/cookie/cookie";
 import LikeState from "components/LikeState";
 import Button from "./Button";
+import { postHouseDelete } from "../utils/api/api";
 
 const HotelElementWrapper = styled.li`
   ${HotelElementWrapperStyle}
@@ -38,6 +39,7 @@ const HotelElement = ({ house, isWish, made }) => {
   const localUserName = useRecoilState(userNamePersistState);
   const setIsLoginModal = useSetRecoilState(isLoginModalState);
   const [islikeState, setIsLikeState] = useState(house.isLike);
+  const token = getCookie("token");
 
   // 로그인 x -> 하트 눌렀을 때
   const moveLogin = (e) => {
@@ -59,10 +61,22 @@ const HotelElement = ({ house, isWish, made }) => {
       if (isWish) {
         queryClient.invalidateQueries("wish");
       } else {
-        queryClient.invalidateQueries("houses");
+        queryClient.invalidateQueries("infinityTest");
       }
     },
   });
+
+  const removeMutation = useMutation((id) => postHouseDelete(id, token), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("registration");
+      alert("삭제가 완료되었습니다!");
+    },
+  });
+
+  const onRemove = async (e, id) => {
+    e.stopPropagation();
+    const res = await removeMutation.mutateAsync(id);
+  };
 
   //별점은 나중에
   return (
@@ -97,7 +111,9 @@ const HotelElement = ({ house, isWish, made }) => {
         {pathname === "/profile" && made === true && (
           <ButtonWrapper>
             <Button>수정</Button>
-            <Button type={true}>삭제</Button>
+            <Button type={true} onClick={(e) => onRemove(e, house.id)}>
+              삭제
+            </Button>
           </ButtonWrapper>
         )}
       </HotelElementTextWrapper>
