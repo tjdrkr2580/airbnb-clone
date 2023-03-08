@@ -7,6 +7,7 @@ const CustomBtn = styled.button`
   width: 100%;
   height: 4rem;
   font-size: 1.35rem;
+  pointer-events: inherit;
   ${boxBorderRadius};
   ${(props) =>
     props.isType === true
