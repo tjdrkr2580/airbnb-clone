@@ -120,7 +120,10 @@ const LoginModal = () => {
         nickname: response.data.data.nickname,
       });
       setIsLoginModal(false);
-      setLocalUserName(response.data.data.nickname);
+      setLocalUserName({
+        id: response.data.data.id,
+        nickname: response.data.data.nickname,
+      });
     },
   }); //로그인 mutation
 

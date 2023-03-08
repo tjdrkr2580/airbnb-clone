@@ -31,7 +31,6 @@ const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const setHotelAdd = useSetRecoilState(isHotelAddState);
   const [isUser, setIsUser] = useRecoilState(isUserState);
-  const userInfo = useRecoilValue(globalUserInfoState);
   const reset = useResetRecoilState(globalUserInfoState);
   const resetUserName = useResetRecoilState(userNamePersistState);
   const setFilterModal = useSetRecoilState(isFilterState);
@@ -86,7 +85,7 @@ const Header = () => {
         {showModal === true && (
           <MyInfoModalContainer>
             <UserEmail>
-              <span>{userName}</span>
+              <span>{userName.nickname}</span>
             </UserEmail>
             <UserPage
               onClick={() => {
