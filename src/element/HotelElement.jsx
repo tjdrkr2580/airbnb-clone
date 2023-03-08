@@ -61,7 +61,7 @@ const HotelElement = ({ house, isWish, made }) => {
       if (isWish) {
         queryClient.invalidateQueries("wish");
       } else {
-        queryClient.invalidateQueries("houses");
+        queryClient.invalidateQueries("infinityTest");
       }
     },
   });

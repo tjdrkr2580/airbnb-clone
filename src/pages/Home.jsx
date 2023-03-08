@@ -1,16 +1,18 @@
 import HotelElement from "element/HotelElement";
 import SkeletonHotelElement from "element/SkeletonHotelElement";
 import React, { useState } from "react";
-import { useQueries, useQuery } from "react-query";
+import { useInfiniteQuery, useQueries } from "react-query";
 import styled from "styled-components";
-import { getHouses, getSearchHouses } from "utils/api/api";
+import { getHouses, getInfinityHouse, getSearchHouses } from "utils/api/api";
 import { HotelGridLayoutStyle, PageMargin } from "utils/style/mixins";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   isSearchState,
   searchValueState,
   userNamePersistState,
 } from "store/atoms";
+import Button from "element/Button";
+import { useInView } from "react-intersection-observer";
 
 const HomeWrapper = styled.section`
   display: flex;
@@ -24,12 +26,10 @@ const HotelGridWrapper = styled.ul`
 `;
 
 const Home = () => {
-  const [houses, setHouses] = useState([]);
+  const [houses, setHouses] = useState(null);
   const localUserName = useRecoilState(userNamePersistState);
   const isSearch = useRecoilState(isSearchState);
   const searchValue = useRecoilState(searchValueState);
-  const resetIsSearch = useResetRecoilState(isSearchState);
-  const resetSearchValue = useResetRecoilState(searchValueState);
 
   const homeQueries = useQueries(
     isSearch[0] === true
@@ -61,10 +61,31 @@ const Home = () => {
         ]
   );
 
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      "infinityTest",
+      ({ pageParam = 0 }) => {
+        if (localUserName[0].id !== undefined) {
+          return getInfinityHouse(pageParam, localUserName[0].id);
+        } else {
+          return getInfinityHouse(pageParam);
+        }
+      },
+      {
+        getNextPageParam: (lastPage, allPages) => {
+          const nextPage = allPages.length + 1;
+          return lastPage?.data?.data?.length === 0 ? undefined : nextPage;
+        },
+        onSuccess: ({ pages }) => {
+          setHouses(pages);
+        },
+      }
+    );
+
   return (
     <HomeWrapper>
       <HotelGridWrapper>
-        {homeQueries[0].isLoading === true ? (
+        {isLoading === true && isFetchingNextPage === false && (
           <>
             <SkeletonHotelElement />
             <SkeletonHotelElement />
@@ -75,13 +96,32 @@ const Home = () => {
             <SkeletonHotelElement />
             <SkeletonHotelElement />
             <SkeletonHotelElement />
+          </>
+        )}
+        {isLoading === false &&
+          houses !== null &&
+          houses.map((data) =>
+            data?.data?.data?.map((house) => (
+              <HotelElement house={house} key={house.id} />
+            ))
+          )}
+        {isFetchingNextPage === true && hasNextPage === true && (
+          <>
+            <SkeletonHotelElement />
+            <SkeletonHotelElement />
+            <SkeletonHotelElement />
             <SkeletonHotelElement />
             <SkeletonHotelElement />
             <SkeletonHotelElement />
           </>
-        ) : (
-          houses.map((house) => <HotelElement key={house.id} house={house} />)
         )}
+        <Button
+          onClick={() => {
+            fetchNextPage();
+          }}
+        >
+          버튼
+        </Button>
       </HotelGridWrapper>
     </HomeWrapper>
   );

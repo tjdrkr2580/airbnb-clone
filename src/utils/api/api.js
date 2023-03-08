@@ -34,10 +34,8 @@ export const getWishList = (token) => {
 export const getDetailPatch = (id) => {
   let res = "";
   if (id.userId) {
-    console.log("id로 detail get");
     res = axios.get(`api/houses/${id.houseId}?userId=${id.userId}`);
   } else {
-    console.log("그냥 detail get");
     res = axios.get(`api/houses/${id.id}`);
   }
   return res;
@@ -106,5 +104,15 @@ export const postHouseDelete = (id, token) => {
   const res = axios.del(`api/houses/${id}`, {
     headers: { Authorization: token },
   });
+  return res;
+};
+
+export const getInfinityHouse = (page, id) => {
+  let res;
+  if (id) {
+    res = axios.get(`api/houses?page=${page}&userId=${id}`);
+  } else {
+    res = axios.get(`api/houses?page=${page}`);
+  }
   return res;
 };
