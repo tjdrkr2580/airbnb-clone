@@ -96,7 +96,14 @@ const Header = () => {
               <span>마이페이지</span>
             </UserPage>
             <LogoutButton>
-              <TransparentBtn onClick={onLogout}>로그아웃</TransparentBtn>
+              <TransparentBtn
+                onClick={() => {
+                  navigate("/");
+                  onLogout();
+                }}
+              >
+                로그아웃
+              </TransparentBtn>
             </LogoutButton>
           </MyInfoModalContainer>
         )}

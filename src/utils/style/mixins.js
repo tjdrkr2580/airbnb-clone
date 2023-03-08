@@ -55,7 +55,7 @@ export const HotelElementWrapperStyle = css`
   display: flex;
   flex-direction: column;
   max-width: 40rem;
-  height: 42rem;
+  height: 50rem;
   cursor: pointer;
   ${boxBorderRadius}
 
