@@ -107,14 +107,14 @@ function MyPage() {
             <SkeletonHotelElement />
             <SkeletonHotelElement />
           </ListBox>
-        ) : wishList.length === 0 ? (
+        ) : profileQueries[0].isLoading === false && wishList.length === 0 ? (
           <MessageBox>
             <Message>위시리스트가 없습니다.</Message>
           </MessageBox>
         ) : (
           <SliderStyle {...settings}>
             {wishList.map((list) => (
-              <HotelElement key={list.id} data={list} />
+              <HotelElement key={list.id} house={list} isWish={true} />
             ))}
           </SliderStyle>
         )}
@@ -139,7 +139,7 @@ function MyPage() {
         ) : (
           <SliderStyle {...settings}>
             {registList.map((list) => (
-              <HotelElement made={true} key={list.id} house={list} />
+              <HotelElement key={list.id} house={list} />
             ))}
           </SliderStyle>
         )}
