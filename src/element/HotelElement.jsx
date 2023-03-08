@@ -5,13 +5,21 @@ import {
   HotelElementWrapperStyle,
 } from "utils/style/mixins";
 import hotel from "../assets/hotel.jpg";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
+=======
+import { useNavigate, useLocation } from "react-router-dom";
+>>>>>>> 5eda91c (feat : buttonWrapper)
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { userNamePersistState, isLoginModalState } from "store/atoms";
 import { useMutation, useQueryClient } from "react-query";
 import { postWish } from "utils/api/api";
 import { getCookie } from "utils/cookie/cookie";
 import LikeState from "components/LikeState";
+<<<<<<< HEAD
+=======
+import Button from "./Button";
+>>>>>>> 5eda91c (feat : buttonWrapper)
 
 const HotelElementWrapper = styled.li`
   ${HotelElementWrapperStyle}
