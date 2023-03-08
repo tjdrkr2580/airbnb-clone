@@ -132,7 +132,7 @@ function MyPage() {
             <SkeletonHotelElement />
             <SkeletonHotelElement />
           </SliderStyle>
-        ) : registList.length === 0 ? (
+        ) : profileQueries[1].isLoading === false && registList.length === 0 ? (
           <MessageBox>
             <Message>등록한 숙소가 없습니다.</Message>
           </MessageBox>
@@ -156,7 +156,7 @@ function MyPage() {
             <SkeletonHotelElement />
             <SkeletonHotelElement />
           </SliderStyle>
-        ) : reserList.length === 0 ? (
+        ) : profileQueries[2].isLoading === false && reserList.length === 0 ? (
           <MessageBox>
             <Message>예약한 숙소가 없습니다.</Message>
           </MessageBox>
@@ -171,19 +171,6 @@ function MyPage() {
     </MyPageContainer>
   );
 }
-
-// <ListContainer>
-// <ListTitle>
-// <h1>내가 예약한 숙소</h1>
-// </ListTitle>
-// <ListBox>
-//  <HotelElement />
-//  <HotelElement />
-//  <HotelElement />
-//  <HotelElement />
-//  <HotelElement />
-// </ListBox>
-// </ListContainer>
 
 export default MyPage;
 
