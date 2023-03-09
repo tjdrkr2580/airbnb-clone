@@ -27,8 +27,8 @@ const HotelGridWrapper = styled.ul`
 const Home = () => {
   const [houses, setHouses] = useState(null);
   const localUserName = useRecoilState(userNamePersistState);
-  const isSearch = useRecoilValue(isSearchState);
-  const searchValue = useRecoilValue(searchValueState);
+  const [isSearch, setIsSearch] = useRecoilState(isSearchState);
+  const [searchValue, setSearchValue] = useRecoilState(searchValueState);
   const [isEnd, setIsEnd] = useState(false);
   const [throttle, setThrottle] = useState(false);
 
@@ -51,14 +51,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    window.moveTo(0, 0);
+    window.scrollTo(0, 0);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      setIsSearch(false);
+      setSearchValue(null);
+    };
   }, []);
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [searchValue]);
 
   const { isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     useInfiniteQuery(
@@ -93,14 +93,13 @@ const Home = () => {
       }
     );
 
+  refetch();
+
   return (
     <HomeWrapper>
       <HotelGridWrapper>
         {isLoading === true && isFetchingNextPage === false && (
           <>
-            <SkeletonHotelElement />
-            <SkeletonHotelElement />
-            <SkeletonHotelElement />
             <SkeletonHotelElement />
             <SkeletonHotelElement />
             <SkeletonHotelElement />

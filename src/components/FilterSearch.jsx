@@ -120,7 +120,8 @@ const FilterSearch = () => {
 
   useEffect(() => {
     setIsSearch(false);
-  }, [isSearch]);
+  }, []);
+
   const onSubmit = (data) => {
     const value = {
       minPrice: data.minPrice,
