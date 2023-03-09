@@ -60,7 +60,8 @@ const RightLayout = styled.section`
 `;
 
 const CuroselCustom = styled.section`
-    max-width: 60%;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     .paging-item {
         width: 2rem;
@@ -79,6 +80,8 @@ const CustomCarousel = styled(Carousel)`
     height: 20rem;
     img {
         width: 100%;
+        max-width: 1200px;
+
         height: 60rem;
         object-fit: cover;
         object-position: center;
@@ -86,7 +89,8 @@ const CustomCarousel = styled(Carousel)`
 `;
 
 const MainComponent = styled.main`
-    width: 60%;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     margin-top: 3rem;
     position: relative;
@@ -103,7 +107,8 @@ const MainComponent = styled.main`
 const ContentComponent = styled.section`
     display: flex;
     flex-direction: column;
-    width: 60%;
+    width: 100%;
+    max-width: 1200px;
     margin-bottom: 10rem;
     @media (max-width: 1160px) {
         width: 100%;
