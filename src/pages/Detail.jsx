@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { flexColumnCenter, PageMargin } from 'utils/style/mixins';
+import { boxBorderRadius, flexColumnCenter, PageMargin } from 'utils/style/mixins';
 import { FiCopy } from 'react-icons/fi';
 import test from '../assets/hotel.jpg';
 import Carousel from 'nuka-carousel/lib/carousel';
@@ -12,10 +12,11 @@ import { useParams } from 'react-router-dom';
 import SkeletonHotel from '../element/SkeletonHotelElement';
 import profile from '../assets/default.png';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { userNamePersistState, isLoginModalState } from 'store/atoms';
+import { userNamePersistState, isLoginModalState, isTotalTagsModal, totalTagsHouseId } from 'store/atoms';
 import { getCookie } from 'utils/cookie/cookie';
 import { useMutation } from 'react-query';
 import LikeState from 'components/LikeState';
+import Button from 'element/Button';
 
 const DetailWrapper = styled.section`
     display: flex;
@@ -59,6 +60,8 @@ const RightLayout = styled.section`
 `;
 
 const CuroselCustom = styled.section`
+    max-width: 60%;
+    margin: 0 auto;
     .paging-item {
         width: 2rem;
     }
@@ -83,18 +86,29 @@ const CustomCarousel = styled(Carousel)`
 `;
 
 const MainComponent = styled.main`
+    width: 60%;
+    margin: 0 auto;
     margin-top: 3rem;
     position: relative;
     display: flex;
     justify-content: space-between;
     gap: 1.25rem;
+    @media (max-width: 1160px) {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 5rem;
+    }
 `;
 
 const ContentComponent = styled.section`
     display: flex;
     flex-direction: column;
     width: 60%;
-    height: 108rem;
+    margin-bottom: 10rem;
+    @media (max-width: 1160px) {
+        width: 100%;
+        margin-bottom: 5rem;
+    }
 `;
 
 const LineComponent = styled.section`
@@ -124,8 +138,14 @@ const LineComponent = styled.section`
 
     h1 {
         margin: 2rem 0 4rem 0;
-
         font-size: 2.2rem;
+    }
+
+    button {
+        margin-top: 4rem;
+        margin-bottom: 2rem;
+        width: 300px;
+        border: 0.01rem solid ${(props) => props.theme.selectColor1};
     }
 `;
 
@@ -157,6 +177,8 @@ const Detail = () => {
     const [houseDetail, setHouseDetail] = useState(null);
     const localUserName = useRecoilState(userNamePersistState);
     const setIsLoginModal = useSetRecoilState(isLoginModalState);
+    const setIsTotalTagsModal = useSetRecoilState(isTotalTagsModal);
+    const setTotalTagsHouseId = useSetRecoilState(totalTagsHouseId);
     const [islikeState, setIsLikeState] = useState();
     const { id } = useParams();
 
@@ -185,6 +207,10 @@ const Detail = () => {
         },
     });
 
+    const totalTagsClick = () => {
+        setTotalTagsHouseId(houseDetail.id);
+        setIsTotalTagsModal(true);
+    };
     return (
         <DetailWrapper>
             {isLoading === true ? (
@@ -239,13 +265,17 @@ const Detail = () => {
                             <LineComponent>
                                 <h1>숙소 편의시설</h1>
                                 <ul className="grid">
-                                    {houseDetail?.tags.map((tag) => (
-                                        <Tag key={tag.id}>
-                                            <img src={tag.imageURL} alt="tag" />
-                                            <li key={tag.id}>{tag.name}</li>
-                                        </Tag>
-                                    ))}
+                                    {houseDetail?.tags.map(
+                                        (tag, index) =>
+                                            index < 10 && (
+                                                <Tag key={tag.id}>
+                                                    <img src={tag.imageURL} alt="tag" />
+                                                    <li key={tag.id}>{tag.name}</li>
+                                                </Tag>
+                                            )
+                                    )}
                                 </ul>
+                                <Button onClick={totalTagsClick}>편의시설 {houseDetail?.tags.length} 모두보기</Button>
                             </LineComponent>
                         </ContentComponent>
                         <DetailSubmit houseDetail={houseDetail} />

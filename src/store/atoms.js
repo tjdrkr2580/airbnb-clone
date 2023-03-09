@@ -48,5 +48,22 @@ export const isSearchState = atom({
 // 검색 필터값
 export const searchValueState = atom({
     key: `state${v4()}`,
-    default: {},
+    default: null,
+});
+
+export const changeState = atom({
+    key: `state${v4()}`,
+    default: false,
+});
+
+// tag 모두보기
+export const isTotalTagsModal = atom({
+    key: `state${v4()}`,
+    default: false,
+});
+
+// tog modal true일때 가져갈 houseId
+export const totalTagsHouseId = atom({
+    key: `state${v4()}`,
+    default: null,
 });
