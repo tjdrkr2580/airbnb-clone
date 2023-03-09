@@ -145,10 +145,3 @@ export const getTotalTags = (id) => {
     const res = axios.get(`api/tagTypes/byHome?homeId=${id}`);
     return res;
 };
-
-// 닉네임 체크
-export const getNicknameCheck = (data) => {
-    console.log('api nick', data);
-    const res = axios.get(`api/users/nickName/duplicate?nickName=${data}`);
-    return res;
-};
