@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { isFilterState } from "store/atoms";
+import { changeState, isFilterState } from "store/atoms";
 import styled from "styled-components";
 import { modalVariants } from "utils/animation/variants";
 import {
@@ -116,14 +116,11 @@ const FilterSearch = () => {
   let oneDay = 24 * 60 * 60 * 1000;
   const [startDate, setStartDate] = useState(date);
   const [endDate, setEndDate] = useState(new Date(date.getTime() + oneDay));
-  const [change, setChange] = useState(false);
+  const [change, setChange] = useRecoilState(changeState);
 
   useEffect(() => {
     setIsSearch(false);
-    setSearchValue({});
   }, [isSearch]);
-  console.log("start", startDate);
-  console.log("end", endDate);
   const onSubmit = (data) => {
     const value = {
       minPrice: data.minPrice,

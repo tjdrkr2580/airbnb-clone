@@ -1,18 +1,17 @@
 import HotelElement from "element/HotelElement";
 import SkeletonHotelElement from "element/SkeletonHotelElement";
-import React, { useState } from "react";
-import { useInfiniteQuery, useQueries } from "react-query";
+import React, { useEffect, useState } from "react";
+import { useInfiniteQuery } from "react-query";
 import styled from "styled-components";
-import { getHouses, getInfinityHouse, getSearchHouses } from "utils/api/api";
+import { getInfinityHouse, getInfinityHouseFilterSearch } from "utils/api/api";
 import { HotelGridLayoutStyle, PageMargin } from "utils/style/mixins";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   isSearchState,
   searchValueState,
   userNamePersistState,
 } from "store/atoms";
 import Button from "element/Button";
-import { useInView } from "react-intersection-observer";
 
 const HomeWrapper = styled.section`
   display: flex;
@@ -28,47 +27,59 @@ const HotelGridWrapper = styled.ul`
 const Home = () => {
   const [houses, setHouses] = useState(null);
   const localUserName = useRecoilState(userNamePersistState);
-  const isSearch = useRecoilState(isSearchState);
-  const searchValue = useRecoilState(searchValueState);
+  const isSearch = useRecoilValue(isSearchState);
+  const searchValue = useRecoilValue(searchValueState);
+  const [isEnd, setIsEnd] = useState(false);
+  const [throttle, setThrottle] = useState(false);
 
-  const homeQueries = useQueries(
-    isSearch[0] === true
-      ? [
-          {
-            queryKey: "searchHouses",
-            queryFn: () =>
-              getSearchHouses(
-                localUserName[0].id !== undefined
-                  ? { id: localUserName[0].id, filter: searchValue[0] }
-                  : { filter: searchValue[0] }
-              ),
-            onSuccess: ({ data }) => {
-              setHouses(data.data);
-            },
-          },
-        ]
-      : [
-          {
-            queryKey: "houses",
-            queryFn: () =>
-              getHouses(
-                localUserName[0].id !== undefined && { id: localUserName[0].id }
-              ),
-            onSuccess: ({ data }) => {
-              setHouses(data.data);
-            },
-          },
-        ]
-  );
+  const handleScroll = () => {
+    if (throttle) return;
+    if (!throttle) {
+      setThrottle(true);
+      setTimeout(async () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+        if (scrollTop + clientHeight >= scrollHeight - 30) {
+          setIsEnd(true);
+          await fetchNextPage();
+          setIsEnd(false);
+        }
+      }, 300);
+    }
+  };
+
+  useEffect(() => {
+    window.moveTo(0, 0);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // useEffect(() => {
+  //   refetch();
+  // }, [searchValue]);
+
+  const { isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     useInfiniteQuery(
       "infinityTest",
       ({ pageParam = 0 }) => {
-        if (localUserName[0].id !== undefined) {
-          return getInfinityHouse(pageParam, localUserName[0].id);
+        if (isSearch === false) {
+          if (localUserName[0].id !== undefined) {
+            return getInfinityHouse(pageParam, localUserName[0].id);
+          } else {
+            return getInfinityHouse(pageParam);
+          }
         } else {
-          return getInfinityHouse(pageParam);
+          if (localUserName[0].id !== undefined) {
+            return getInfinityHouseFilterSearch(
+              pageParam,
+              searchValue,
+              localUserName[0].id
+            );
+          } else {
+            return getInfinityHouseFilterSearch(pageParam, searchValue);
+          }
         }
       },
       {
@@ -115,13 +126,6 @@ const Home = () => {
             <SkeletonHotelElement />
           </>
         )}
-        <Button
-          onClick={() => {
-            fetchNextPage();
-          }}
-        >
-          버튼
-        </Button>
       </HotelGridWrapper>
     </HomeWrapper>
   );
