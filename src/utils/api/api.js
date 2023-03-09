@@ -116,3 +116,33 @@ export const getInfinityHouse = (page, id) => {
   }
   return res;
 };
+
+export const getInfinityHouseFilterSearch = (page, data, id) => {
+  let res;
+  if (id) {
+    res = axios.get(
+      `api/houses?adminDistrict=${data.adminDistrict}&peopleCount=${data.peopleCount}&minPrice=${data.minPrice}&maxPrice=${data.maxPrice}&startDate=${data.startDate}&endDate=${data.endDate}&page=${page}&userId=${id}`
+    );
+  } else {
+    res = axios.get(
+      `api/houses?adminDistrict=${data.adminDistrict}&peopleCount=${data.peopleCount}&minPrice=${data.minPrice}&maxPrice=${data.maxPrice}&startDate=${data.startDate}&endDate=${data.endDate}&page=${page}`
+    );
+  }
+  return res;
+};
+
+// adminDistrict=${data.filter.adminDistrict}&peopleCount=${data.filter.peopleCount}&minPrice=${data.filter.minPrice}&maxPrice=${data.filter.maxPrice}&startDate=${data.filter.startDate}&endDate=${data.filter.endDate}&page=0&size=10&sortBy=id&isAsc=false&userId=${data.id}`
+
+// export const getSearchHouses = (data) => {
+//   let res = "";
+//   if (data.id) {
+//     res = axios.get(
+//       `api/houses?adminDistrict=${data.filter.adminDistrict}&peopleCount=${data.filter.peopleCount}&minPrice=${data.filter.minPrice}&maxPrice=${data.filter.maxPrice}&startDate=${data.filter.startDate}&endDate=${data.filter.endDate}&page=0&size=10&sortBy=id&isAsc=false&userId=${data.id}`
+//     );
+//   } else {
+//     res = axios.get(
+//       `api/houses?adminDistrict=${data.filter.adminDistrict}&peopleCount=${data.filter.peopleCount}&minPrice=${data.filter.minPrice}&maxPrice=${data.filter.maxPrice}&startDate=${data.filter.startDate}&endDate=${data.filter.endDate}&page=0&size=10&sortBy=id&isAsc=false`
+//     );
+//   }
+//   return res;
+// };

@@ -24,12 +24,15 @@ const HotelElementTextWrapper = styled.ul`
   ${HotelElementTextWrapperStyle}
 `;
 
-const ButtonWrapper = styled.ul`
+const ButtonWrapper = styled.div`
+  width: 100%;
   display: flex;
   margin-top: 0.75rem;
   gap: 1rem;
+  justify-content: flex-end;
   button {
     width: 40%;
+    align-self: flex-end;
   }
 `;
 
@@ -110,7 +113,6 @@ const HotelElement = ({ house, isWish, made }) => {
         </span>
         {pathname === "/profile" && made === true && (
           <ButtonWrapper>
-            <Button>수정</Button>
             <Button type={true} onClick={(e) => onRemove(e, house.id)}>
               삭제
             </Button>
