@@ -131,7 +131,7 @@ function MyPage() {
                 ) : (
                     <SliderStyle {...settings}>
                         {registList.map((list) => (
-                            <HotelElement made={true} key={list.id} house={list} isWish={false} />
+                            <HotelElement made={true} key={list.id} house={list} />
                         ))}
                     </SliderStyle>
                 )}
@@ -155,7 +155,7 @@ function MyPage() {
                 ) : (
                     <SliderStyle {...settings}>
                         {reserList.map((list) => (
-                            <HotelElement key={list.id} house={list.house} isWish={false} />
+                            <HotelElement key={list.id} house={list.house} />
                         ))}
                     </SliderStyle>
                 )}
