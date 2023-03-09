@@ -82,7 +82,7 @@ const HotelElement = ({ house, isWish, made }) => {
     return (
         <HotelElementWrapper onClick={() => navigate(`/${house.id}`)}>
             <img src={house?.thumbnailUrl !== null ? house?.thumbnailUrl : hotel} alt="view" />
-            {localUserName[0] === '' ? <LikeState size={28} position={true} isTrue={false} onClick={moveLogin} /> : isWish === true ? <LikeState size={28} position={true} isTrue={house?.isLike} onClick={(e) => likeClick(e, house.id)} /> : <></>}
+            {localUserName[0] === '' ? <LikeState size={28} position={true} isTrue={false} onClick={moveLogin} /> : <LikeState size={28} position={true} isTrue={house?.isLike} onClick={(e) => likeClick(e, house.id)} />}
             <HotelElementTextWrapper>
                 <header className="hotel-header">
                     <h1>{house?.adminDistrict}, 한국</h1>
