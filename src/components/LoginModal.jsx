@@ -127,7 +127,7 @@ const LoginModal = () => {
 
     const nicknameCheck = async () => {
         try {
-            const response = await axios.get(`api/users/nickName/duplicate?nickName=${nicknameValue}`);
+            const response = await axios.get(`https://port-0-airbnb-practice-108dypx2aldzyvyjq.sel3.cloudtype.app/api/users/nickName/duplicate?nickName=${nicknameValue}`);
             alert(response.data.message);
             setNickState(true);
         } catch (error) {
@@ -137,7 +137,7 @@ const LoginModal = () => {
 
     const emailCheck = async () => {
         try {
-            const response = await axios.get(`api/users/email/duplicate?email=${emailValue}`);
+            const response = await axios.get(`https://port-0-airbnb-practice-108dypx2aldzyvyjq.sel3.cloudtype.app/api/users/email/duplicate?email=${emailValue}`);
             alert(response.data.message);
             setEmailState(true);
         } catch (error) {
